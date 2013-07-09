@@ -71,6 +71,9 @@ import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Message;
 import java.util.concurrent.Semaphore;
+
+import com.gamesinjs.dune2.adv.AdvertismentSystem;
+
 import android.content.pm.ActivityInfo;
 import android.view.Display;
 import android.text.InputType;
@@ -145,6 +148,9 @@ public class MainActivity extends Activity
 		_videoLayout.addView(_layout);
 
 		_ad = new Advertisement(this);
+		
+		AdvertismentSystem.setAdvertisment(_ad.getView(), this);
+		
 		if( _ad.getView() != null )
 		{
 			_videoLayout.addView(_ad.getView());
@@ -1025,6 +1031,8 @@ public class MainActivity extends Activity
 				}
 			}
 		}
+		
+		AdvertismentSystem.init();
 	}
 
 	public int getApplicationVersion()
