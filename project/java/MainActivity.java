@@ -23,6 +23,8 @@ package net.sourceforge.clonekeenplus;
 
 import android.app.Activity;
 import android.content.Context;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.KeyEvent;
@@ -58,8 +60,6 @@ import java.io.FileOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.zip.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 import java.util.Set;
 import android.text.SpannedString;
 import java.io.BufferedReader;
@@ -73,6 +73,7 @@ import android.os.Message;
 import java.util.concurrent.Semaphore;
 
 import com.gamesinjs.dune2.adv.AdvertismentSystem;
+import com.gamesinjs.dune2.sound.SoundSystem;
 
 import android.content.pm.ActivityInfo;
 import android.view.Display;
@@ -85,6 +86,7 @@ public class MainActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
 		setRequestedOrientation(Globals.HorizontalOrientation ? ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE : ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -1033,6 +1035,7 @@ public class MainActivity extends Activity
 		}
 		
 		AdvertismentSystem.init();
+		SoundSystem.init();
 	}
 
 	public int getApplicationVersion()

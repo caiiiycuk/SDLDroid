@@ -101,6 +101,7 @@ class AudioThread
 												encoding,
 												bufSize,
 												AudioTrack.MODE_STREAM );
+					mAudio.setStereoVolume(0.5f, 0.5f);
 					mAudio.play();
 			}
 			return mVirtualBufSize;

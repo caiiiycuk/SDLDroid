@@ -26,7 +26,7 @@ import android.content.Context;
 import java.util.Vector;
 import android.view.KeyEvent;
 
-class Globals
+public class Globals
 {
 	// These config options are modified by ChangeAppsettings.sh script - see the detailed descriptions there
 	public static String ApplicationName = "CommanderGenius";
