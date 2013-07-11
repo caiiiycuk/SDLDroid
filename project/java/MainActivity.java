@@ -130,8 +130,6 @@ public class MainActivity extends Activity
 			_layout2.addView(_btn);
 		}
 
-		_layout.addView(_layout2);
-
 		ImageView img = new ImageView(this);
 
 		img.setScaleType(ImageView.ScaleType.FIT_CENTER /* FIT_XY */ );
@@ -143,8 +141,10 @@ public class MainActivity extends Activity
 		{
 			img.setImageResource(R.drawable.publisherlogo);
 		}
-		img.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+		img.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, 0, 1));
 		_layout.addView(img);
+		_layout.addView(_layout2);
+		
 		
 		_videoLayout = new FrameLayout(this);
 		_videoLayout.addView(_layout);
@@ -156,7 +156,7 @@ public class MainActivity extends Activity
 		if( _ad.getView() != null )
 		{
 			_videoLayout.addView(_ad.getView());
-			_ad.getView().setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM | Gravity.RIGHT));
+			_ad.getView().setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP | Gravity.CENTER_HORIZONTAL));
 		}
 		
 		setContentView(_videoLayout);
@@ -316,7 +316,7 @@ public class MainActivity extends Activity
 		if( _ad.getView() != null )
 		{
 			_videoLayout.addView(_ad.getView());
-			_ad.getView().setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP | Gravity.RIGHT));
+			_ad.getView().setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP | Gravity.CENTER_HORIZONTAL));
 		}
 		// Receive keyboard events
 		DimSystemStatusBar.get().dim(_videoLayout);
