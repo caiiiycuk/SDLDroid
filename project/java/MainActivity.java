@@ -320,6 +320,8 @@ public class MainActivity extends Activity
 
 	@Override
 	protected void onPause() {
+		SoundSystem.onPause();
+		
 		if( downloader != null )
 		{
 			synchronized( downloader )
@@ -338,6 +340,7 @@ public class MainActivity extends Activity
 	@Override
 	protected void onResume() {
 		super.onResume();
+		SoundSystem.onResume();
 		if( mGLView != null )
 		{
 			mGLView.onResume();
@@ -387,6 +390,8 @@ public class MainActivity extends Activity
 	@Override
 	protected void onDestroy()
 	{
+		AdvertismentSystem.free();
+		SoundSystem.free();
 		if( downloader != null )
 		{
 			synchronized( downloader )

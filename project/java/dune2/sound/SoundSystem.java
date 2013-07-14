@@ -1,22 +1,32 @@
 package com.gamesinjs.dune2.sound;
 
 import java.io.File;
-import java.io.IOException;
-
-import com.gamesinjs.dune2.Globals;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.util.Log;
 
+import com.gamesinjs.dune2.Globals;
+
 
 public class SoundSystem extends Thread {
 	
+	private static final int NO_MUSIC = 0;
+
 	private MediaPlayer mediaPlayer;
 	
 	private int musicPlaying;
 	
 	private static SoundSystem instance;
+	
+	private static boolean alive;
+	
+	private static boolean paused;
+	
+	static {
+		alive = true;
+		paused = false;
+	}
 	
 	private SoundSystem() {
 		setName("SoundSystemThread");
@@ -29,8 +39,7 @@ public class SoundSystem extends Thread {
 		mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 	}
 
-	private void tick() {
-		int musicToPlay = musicToPlay();
+	private void play(int musicToPlay) {
 		if (musicPlaying != musicToPlay) {
 			File dataDir = new File(Globals.DataDir);
 			File music = new File(dataDir, "music/opendune_"+musicToPlay+".mid");
@@ -55,14 +64,20 @@ public class SoundSystem extends Thread {
 	
 	@Override
 	public void run() {
-		while (true) {
+		while (alive) {
 			try {
-				tick();
+				if (!paused) {
+					play(musicToPlay());
+				}
+				
 				sleep(100);
 			} catch (InterruptedException e) {
 				break;
 			}
 		}
+		
+		mediaPlayer.reset();
+		Log.i("OpenDUNE", "Closing SoundSystem Thread");
 	}
 	
 	public static void init() {
@@ -71,5 +86,25 @@ public class SoundSystem extends Thread {
 	}
 	
 	private static native int musicToPlay();
+
+	public static void free() {
+		alive = false;
+	}
+
+	public static void onPause() {
+		paused = true;
+		
+		if (instance != null) {
+			instance.play(NO_MUSIC);
+		}
+	}
+
+	public static void onResume() {
+		paused = false;
+		
+		if (instance != null) {
+			instance.play(musicToPlay());
+		}
+	}
 	
 }

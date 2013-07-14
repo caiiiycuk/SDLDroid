@@ -13,8 +13,11 @@ public class AdvertismentSystem extends Thread {
 	private static View view;
 
 	private static Activity activity;
+	
+	private static boolean alive;
 
 	static {
+		alive = true;
 		instance = new AdvertismentSystem();
 	}
 
@@ -28,7 +31,7 @@ public class AdvertismentSystem extends Thread {
 	@Override
 	public void run() {
 		Log.i("Dune_2", "Show advertisment: " + canShow);
-		while (true) {
+		while (alive) {
 			try {
 				boolean canShowNow = canShow();
 
@@ -44,6 +47,8 @@ public class AdvertismentSystem extends Thread {
 				break;
 			}
 		}
+		
+		Log.i("OpenDUNE", "Closing AdvertismentSystem Thread");
 	}
 
 	public static void init() {
@@ -73,6 +78,10 @@ public class AdvertismentSystem extends Thread {
 			
 			activity.runOnUiThread(new Callback());
 		}
+	}
+
+	public static void free() {
+		alive = false;
 	}
 
 }
