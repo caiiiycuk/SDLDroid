@@ -173,4 +173,8 @@
 <string name="no">No</string>
 <string name="screenkb_custom_layout_help">Press BACK when done. Resize buttons by sliding on empty space.</string>
 <string name="controls_screenkb_custom">Custom</string>
+<string name="eula_refuse">Decline</string>
+<string name="eula_accept">Accept</string>
+<string name="eula_title">End User License Agreement</string>
+<string name="eula">With taking this EULA you are agreeing that you can play this game only if you have own legal copy of Dune 2 from Westwood Studios.</string>
 </resources>

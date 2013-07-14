@@ -145,4 +145,8 @@
 <string name="yes">Так</string>
 <string name="no">Ні</string>
 <string name="controls_screenkb_custom">Налаштування користувача</string>
+<string name="eula_refuse">Отказаться</string>
+<string name="eula_accept">Принять</string>
+<string name="eula_title">Пользовательское соглашение</string>
+<string name="eula">Принимая данное соглашение, вы соглашаетесь, что можете играть в эту игру, только если у вас есть собственная легальная копия игры Дюна 2 от Westwood Studios.</string>
 </resources>

@@ -21,64 +21,56 @@ freely, subject to the following restrictions:
 
 package net.sourceforge.clonekeenplus;
 
-import android.app.Activity;
-import android.content.Context;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.KeyEvent;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.EditText;
-import android.text.Editable;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.FrameLayout;
-import android.graphics.drawable.Drawable;
-import android.content.res.Configuration;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Intent;
-import android.view.View.OnKeyListener;
-import android.view.MenuItem;
-import android.view.Menu;
-import android.view.Gravity;
-import android.text.method.TextKeyListener;
-import java.util.LinkedList;
-import java.io.SequenceInputStream;
-import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.FileOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.zip.*;
-import java.util.Set;
-import android.text.SpannedString;
-import java.io.BufferedReader;
-import java.io.BufferedInputStream;
-import java.io.InputStreamReader;
-import android.view.inputmethod.InputMethodManager;
+import java.io.SequenceInputStream;
+import java.util.LinkedList;
+import java.util.concurrent.Semaphore;
+import java.util.zip.CRC32;
+import java.util.zip.CheckedInputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
+import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.Handler;
-import android.os.Message;
-import java.util.concurrent.Semaphore;
+import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
+import android.os.Bundle;
+import android.text.InputType;
+import android.text.SpannedString;
+import android.util.Log;
+import android.view.Display;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnKeyListener;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.gamesinjs.dune2.adv.AdvertismentSystem;
+import com.gamesinjs.dune2.eula.Eula;
 import com.gamesinjs.dune2.sound.SoundSystem;
-
-import android.content.pm.ActivityInfo;
-import android.view.Display;
-import android.text.InputType;
-import android.util.Log;
 
 public class MainActivity extends Activity
 {
@@ -86,6 +78,9 @@ public class MainActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		
+		Eula.show(this);
+		
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
 		setRequestedOrientation(Globals.HorizontalOrientation ? ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE : ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
