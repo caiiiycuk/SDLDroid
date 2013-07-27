@@ -150,4 +150,5 @@
 <string name="eula_accept">Принять</string>
 <string name="eula_title">Пользовательское соглашение</string>
 <string name="eula">Принимая данное соглашение, вы соглашаетесь, что можете играть в эту игру, только если у вас есть собственная легальная копия игры Дюна 2 от Westwood Studios.</string>
+<string name="select_language">Выберите язык</string>
 </resources>

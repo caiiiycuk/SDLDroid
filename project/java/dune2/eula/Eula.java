@@ -11,11 +11,11 @@ public class Eula {
 	private static final String PREFERENCE_EULA_ACCEPTED = "eula.accepted";
 	private static final String PREFERENCES_EULA = "eula";
 
-	static interface OnEulaAgreedTo {
+	public static interface OnEulaAgreedTo {
 		void onEulaAgreedTo();
 	}
 
-	public static boolean show(final Activity activity) {
+	public static void show(final Activity activity) {
 		final SharedPreferences preferences = activity.getSharedPreferences(
 				PREFERENCES_EULA, Activity.MODE_PRIVATE);
 		if (!preferences.getBoolean(PREFERENCE_EULA_ACCEPTED, false)) {
@@ -45,9 +45,13 @@ public class Eula {
 			});
 			builder.setMessage(R.string.eula);
 			builder.create().show();
-			return false;
+			
+			return;
 		}
-		return true;
+		
+		if (activity instanceof OnEulaAgreedTo) {
+			((OnEulaAgreedTo) activity).onEulaAgreedTo();
+		}
 	}
 
 	private static void accept(SharedPreferences preferences) {

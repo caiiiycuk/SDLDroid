@@ -181,4 +181,5 @@
     <string name="eula_accept">Accept</string>
     <string name="eula_title">End User License Agreement</string>
     <string name="eula">With taking this EULA you are agreeing that you can play this game only if you have own legal copy of Dune 2 from Westwood Studios.</string>
+    <string name="select_language">Select language</string>
 </resources>

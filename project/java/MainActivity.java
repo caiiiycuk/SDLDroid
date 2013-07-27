@@ -70,16 +70,20 @@ import android.widget.TextView;
 
 import com.gamesinjs.dune2.adv.AdvertismentSystem;
 import com.gamesinjs.dune2.eula.Eula;
+import com.gamesinjs.dune2.language.LanguageSelector;
 import com.gamesinjs.dune2.sound.SoundSystem;
 
-public class MainActivity extends Activity
+public class MainActivity extends Activity implements Eula.OnEulaAgreedTo, LanguageSelector.OnLanguageSelected
 {
+	
+	private Runnable initializer;
+	
+	public static String DATA_DIR_FLAG = " -d data-en/";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		
-		Eula.show(this);
 		
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
@@ -207,7 +211,24 @@ public class MainActivity extends Activity
 				}
 			}
 		};
-		(new Thread(new Callback(this))).start();
+		
+		initializer = new Callback(this);
+		Eula.show(this);
+	}
+	
+	@Override
+	public void onEulaAgreedTo() {
+		LanguageSelector.show(this);
+	}
+	
+	@Override
+	public void onLanguageSelected(String suffix) {
+		DATA_DIR_FLAG = " -d data" + suffix + "/";
+		startInitializer();
+	}
+	
+	public void startInitializer() {
+		new Thread(initializer).start();
 	}
 	
 	public void setUpStatusLabel()
