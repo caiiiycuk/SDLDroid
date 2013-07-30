@@ -70,6 +70,7 @@ import android.widget.TextView;
 
 import com.gamesinjs.dune2.adv.AdvertismentSystem;
 import com.gamesinjs.dune2.eula.Eula;
+import com.gamesinjs.dune2.i18n.I18NUtils;
 import com.gamesinjs.dune2.language.LanguageSelector;
 import com.gamesinjs.dune2.sound.SoundSystem;
 
@@ -521,7 +522,12 @@ public class MainActivity extends Activity implements Eula.OnEulaAgreedTo, Langu
 
 		synchronized(textInput)
 		{
-			String text = _screenKeyboard.getText().toString();
+			String text = I18NUtils.translitRussian(_screenKeyboard.getText().toString());
+			
+			if (!text.endsWith("\n")) {
+				text = text + "\n";
+			}
+			
 			for(int i = 0; i < text.length(); i++)
 			{
 				DemoRenderer.nativeTextInput( (int)text.charAt(i), (int)text.codePointAt(i) );
