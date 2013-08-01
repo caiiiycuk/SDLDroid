@@ -145,7 +145,7 @@
 <string name="video_smooth">Fluidité de la vidéo</string>
 <string name="video_separatethread">Thread séparé pour la vidéo : permet paroifs d\'augmenter FPS</string>
 
-<string name="text_edit_click_here">Appuyez pour commencer à taper, appuyez sur Retour/BACK lorsque vous avez terminé</string>
+<string name="text_edit_click_here">Appuyez pour commencer à taper, appuyez sur Retour/Enter lorsque vous avez terminé</string>
 
 <string name="display_size_mouse">Mode d\'émulation de la souris</string>
 <string name="display_size">Sélectionnez votre taille d\'affichage</string>

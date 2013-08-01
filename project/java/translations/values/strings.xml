@@ -148,7 +148,7 @@
     <string name="video_smooth">Linear video filtering</string>
     <string name="video_separatethread">Separate thread for video, will increase FPS on some devices</string>
 
-    <string name="text_edit_click_here">Tap to start typing, press Back when done</string>
+    <string name="text_edit_click_here">Tap to start typing, press Enter when done</string>
 
     <string name="display_size_mouse">Mouse emulation mode</string>
     <string name="display_size">Display size for mouse emulation</string>

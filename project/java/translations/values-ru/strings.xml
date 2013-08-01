@@ -119,7 +119,7 @@
 <string name="pointandclick_relative_accel">Ускорение движения мыши</string>
 <string name="downloads">Загрузки</string>
 <string name="video_separatethread">Отдельный поток для видео, увеличит FPS на некоторых устройствах</string>
-<string name="text_edit_click_here">Нажмите, чтобы ввести текст, нажмите Назад, когда закончите</string>
+<string name="text_edit_click_here">Нажмите, чтобы ввести текст, нажмите ВВОД, когда закончите</string>
 <string name="display_size_mouse">Настройка размера дисплея</string>
 <string name="display_size">Размер дисплея</string>
 <string name="display_size_large">Большой (таблетка)</string>

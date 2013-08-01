@@ -9,6 +9,8 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.content.SharedPreferences;
 
+import java.util.Locale;
+
 public class LanguageSelector {
 	
 	private static final String PREFERENCE_LANGUAGE_SUFFIX = "language.suffix";
@@ -29,6 +31,10 @@ public class LanguageSelector {
 	}
 
 	public static void show(final Activity activity) {
+		if (systemLanguage(activity)) {
+			return;
+		}
+		
 		final SharedPreferences preferences = activity.getSharedPreferences(
 				PREFERENCES_LANGUAGE, Activity.MODE_PRIVATE);
 
@@ -60,6 +66,19 @@ public class LanguageSelector {
 		AlertDialog alert = builder.create();
 		alert.setOwnerActivity(activity);
 		alert.show();
+	}
+
+	private static boolean systemLanguage(final Activity activity) {
+		String suffix = "-" + Locale.getDefault().getLanguage();
+		
+		for (String candidate: LANGUAGE_SUFFIXES) {
+			if (candidate.equalsIgnoreCase(suffix)) {
+				selectLanguageSuffix(activity, candidate);
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 	private static void selectLanguageSuffix(Activity activity, String suffix) {
