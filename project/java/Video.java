@@ -427,7 +427,7 @@ class DemoRenderer extends GLSurfaceView_SDL.Renderer
 			MainActivity.LoadApplicationLibrary(context);
 
 		Settings.Apply(context);
-		accelerometer = new AccelerometerReader(context);
+
 		// Tweak video thread priority, if user selected big audio buffer
 		if(Globals.AudioBufferConfig >= 2)
 			Thread.currentThread().setPriority( (Thread.NORM_PRIORITY + Thread.MIN_PRIORITY) / 2 ); // Lower than normal
@@ -538,11 +538,7 @@ class DemoRenderer extends GLSurfaceView_SDL.Renderer
 
 	public void startAccelerometerGyroscope(int started)
 	{
-		accelerometer.openedBySDL = (started != 0);
-		if( accelerometer.openedBySDL && !mPaused )
-			accelerometer.start();
-		else
-			accelerometer.stop();
+		/* DO NOTHING */
 	}
 
 	public void exitApp()
@@ -642,7 +638,6 @@ class DemoRenderer extends GLSurfaceView_SDL.Renderer
 	public static native void nativeTextInputFinished();
 
 	private MainActivity context = null;
-	public AccelerometerReader accelerometer = null;
 	
 	private GL10 mGl = null;
 	private EGL10 mEgl = null;
@@ -714,12 +709,12 @@ class DemoGLSurfaceView extends GLSurfaceView_SDL {
 
 	@Override
 	public void onPause() {
-		if(mRenderer.mPaused)
+		if(mRenderer.mPaused) {
 			return;
+		}
+
 		mRenderer.mPaused = true;
 		mRenderer.nativeGlContextLostAsyncEvent();
-		if( mRenderer.accelerometer != null ) // For some reason it crashes here often - are we getting this event before initialization?
-			mRenderer.accelerometer.stop();
 		super.onPause();
 	};
 	
@@ -729,15 +724,15 @@ class DemoGLSurfaceView extends GLSurfaceView_SDL {
 
 	@Override
 	public void onResume() {
-		if(!mRenderer.mPaused)
+		if(!mRenderer.mPaused) {
 			return;
+		}
+		
 		mRenderer.mPaused = false;
 		super.onResume();
 		Log.i("SDL", "libSDL: DemoGLSurfaceView.onResume(): mRenderer.mGlSurfaceCreated " + mRenderer.mGlSurfaceCreated + " mRenderer.mPaused " + mRenderer.mPaused);
 		if( mRenderer.mGlSurfaceCreated && ! mRenderer.mPaused || Globals.NonBlockingSwapBuffers )
 			mRenderer.nativeGlContextRecreated();
-		if( mRenderer.accelerometer != null && mRenderer.accelerometer.openedBySDL ) // For some reason it crashes here often - are we getting this event before initialization?
-			mRenderer.accelerometer.start();
 	};
 
 	// This seems like redundant code - it handled in MainActivity.java
