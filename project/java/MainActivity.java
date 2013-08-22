@@ -72,7 +72,6 @@ import com.gamesinjs.dune2.adv.AdvertismentSystem;
 import com.gamesinjs.dune2.eula.Eula;
 import com.gamesinjs.dune2.i18n.I18NUtils;
 import com.gamesinjs.dune2.language.LanguageSelector;
-import com.gamesinjs.dune2.sound.SoundSystem;
 
 public class MainActivity extends Activity implements Eula.OnEulaAgreedTo, LanguageSelector.OnLanguageSelected
 {
@@ -342,8 +341,6 @@ public class MainActivity extends Activity implements Eula.OnEulaAgreedTo, Langu
 
 	@Override
 	protected void onPause() {
-		SoundSystem.onPause();
-		
 		if( downloader != null )
 		{
 			synchronized( downloader )
@@ -362,7 +359,6 @@ public class MainActivity extends Activity implements Eula.OnEulaAgreedTo, Langu
 	@Override
 	protected void onResume() {
 		super.onResume();
-		SoundSystem.onResume();
 		if( mGLView != null )
 		{
 			mGLView.onResume();
@@ -413,7 +409,6 @@ public class MainActivity extends Activity implements Eula.OnEulaAgreedTo, Langu
 	protected void onDestroy()
 	{
 		AdvertismentSystem.free();
-		SoundSystem.free();
 		if( downloader != null )
 		{
 			synchronized( downloader )
@@ -1062,7 +1057,6 @@ public class MainActivity extends Activity implements Eula.OnEulaAgreedTo, Langu
 		}
 		
 		AdvertismentSystem.init();
-		SoundSystem.init();
 	}
 
 	public int getApplicationVersion()
