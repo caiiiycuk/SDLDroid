@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dune 2</string>
+
+
+    <string name="init">Caricamento</string>
+    <string name="please_wait">Download in corso. Attendere prego...</string>
+
+    <string name="device_config">Configura dispositivo</string>
+    <string name="device_change_cfg">Cambia configurazione dispositivo</string>
+
+    <string name="download_unneeded">Download non necessario</string>
+    <string name="connecting_to">Connetti a %s</string>
+    <string name="failed_connecting_to">Conessione a %s fallita</string>
+    <string name="error_connecting_to">Errore di connessione a %s</string>
+    <string name="dl_from">Download dati da %s</string>
+    <string name="error_dl_from">Errore download dati da %s</string>
+    <string name="error_write">Errore di scrittura a %s</string>
+    <string name="dl_progress">%1$.0f%% completato: file %2$s</string>
+    <string name="dl_finished">Finito</string>
+
+    <string name="storage_phone">Memoria interna - %d MB free</string>
+    <string name="storage_sd">Memoria SD Card - %d MB free</string>
+    <string name="storage_custom">Directory personalizzata</string>
+    <string name="storage_commandline">Linea di comando di parametro personalizzata</string>
+    <string name="storage_question">Localizzazione dati installazione</string>
+    <string name="optional_downloads">Downloads</string>
+    <string name="downloads">Downloads</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Annulla</string>
+
+    <string name="controls_arrows">Frecce / joystick / dpad</string>
+    <string name="controls_trackball">Trackball</string>
+    <string name="controls_accel">Accelerometro</string>
+    <string name="controls_touch">Solo touchscreen</string>
+    <string name="controls_question">Quale tipo di tasti navigazione possiede il tuo dispositivo?</string>
+
+    <string name="controls_additional">Controlli addizionali</string>
+    <string name="controls_screenkb">Tastiera a monitor</string>
+    <string name="controls_accelnav">Accelerometro</string>
+
+    <string name="controls_screenkb_size">Dimensione tastiera a monitor</string>
+    <string name="controls_screenkb_drawsize">Dimensione immagini pulsanti</string>
+    <string name="controls_screenkb_large">Grande</string>
+    <string name="controls_screenkb_medium">Medio</string>
+    <string name="controls_screenkb_small">Piccolo</string>
+    <string name="controls_screenkb_tiny">Stretto</string>
+    <string name="controls_screenkb_custom">Personalizzato</string>
+    <string name="controls_screenkb_theme">Stile tastiera a monitor</string>
+    <string name="controls_screenkb_by">%1$s di %2$s</string>
+    <string name="controls_screenkb_transparency">Trasparenza tastiera a monitor</string>
+    <string name="controls_screenkb_trans_0">Invisibile</string>
+    <string name="controls_screenkb_trans_1">Più trasparente</string>
+    <string name="controls_screenkb_trans_2">Trasparente</string>
+    <string name="controls_screenkb_trans_3">Semi-trasparentt</string>
+    <string name="controls_screenkb_trans_4">Non-trasparente</string>
+
+    <string name="trackball_no_dampening">No dampening</string>
+    <string name="trackball_fast">Veloce</string>
+    <string name="trackball_medium">Medio</string>
+    <string name="trackball_slow">Lento</string>
+    <string name="trackball_question">Trackball dampening</string>
+
+    <string name="accel_veryfast">Molto veloce</string>
+    <string name="accel_fast">Veloce</string>
+    <string name="accel_medium">Medio</string>
+    <string name="accel_slow">Lento</string>
+    <string name="accel_veryslow">Molto lento</string>
+    <string name="accel_question">Sensibilità accellerometro</string>
+
+    <string name="accel_floating">Floating</string>
+    <string name="accel_fixed_start">Fissa quanto parte l'applicazione</string>
+    <string name="accel_fixed_horiz">Fissa in base all'orientamento del dispositivo</string>
+    <string name="accel_question_center">Posizione centrale accellerometro</string>
+
+    <string name="mouse_emulation">Emulazione mouse</string>
+    <string name="rightclick_question">Click mouse destro</string>
+    <string name="rightclick_menu">Tasto menu</string>
+    <string name="rightclick_key">Tasto fisico</string>
+    <string name="rightclick_multitouch">Tocca lo schermo col secondo dito (multitouch)</string>
+    <string name="rightclick_pressure">Tocca lo schermo con forza (pressione)</string>
+    <string name="rightclick_none">Disabilita click destro</string>
+
+    <string name="leftclick_question">Click mouse sinistro</string>
+    <string name="leftclick_normal">Normale</string>
+    <string name="leftclick_near_cursor">Tocca vicino al cursore</string>
+    <string name="leftclick_multitouch">Tocca lo schermo col secondodito (multitouch)</string>
+    <string name="leftclick_pressure">Tocca lo schermo con forza (pressione)</string>
+    <string name="leftclick_dpadcenter">Trackball click / joystick al centro</string>
+    <string name="leftclick_timeout">Mantieni premuno nello stesso punto</string>
+    <string name="leftclick_tap">Tocca</string>
+    <string name="leftclick_tap_or_timeout">Tocca e mantieni premuto</string>
+    <string name="leftclick_timeout_time">Timeout pressione</string>
+    <string name="leftclick_timeout_time_0">0.3 sec</string>
+    <string name="leftclick_timeout_time_1">0.5 sec</string>
+    <string name="leftclick_timeout_time_2">0.7 sec</string>
+    <string name="leftclick_timeout_time_3">1 sec</string>
+    <string name="leftclick_timeout_time_4">1.5 sec</string>
+    <string name="click_with_dpadcenter">Click destro con trackball / joystick al centro</string>
+
+    <string name="pointandclick_question">Opzioni avanzate</string>
+    <string name="pointandclick_keepaspectratio">Mantieni risoluzione schermo 4:3</string>
+    <string name="pointandclick_showcreenunderfinger">Mostra lo schermo sotto il dito in una finestra separata</string>
+    <string name="pointandclick_showcreenunderfinger2">Ingrandimento schermo</string>
+    <string name="pointandclick_joystickmouse">Muovi il mouse con joystick o trackball</string>
+    <string name="pointandclick_joystickmousespeed">Muovi il mouse con velocità joystick</string>
+    <string name="pointandclick_joystickmouseaccel">Muovi il mouse con l'accellerazione del joystick</string>
+    <string name="pointandclick_relative">Movimento mouse relativo (laptop mode)</string>
+    <string name="pointandclick_relative_speed">Velocità movimento mouse relativo</string>
+    <string name="pointandclick_relative_accel">Accellerazione movimento mouse relativo</string>
+
+    <string name="none">Nessuno</string>
+
+    <string name="measurepressure">Calibrazione pressione touchscreen</string>
+    <string name="measurepressure_touchplease">Fai scivolare il dito sullo schermo per 2 secondi</string>
+    <string name="measurepressure_response">Pressione %1$03d raggio %2$03d</string>
+
+    <string name="audiobuf_verysmall">Molto piccolo (device veloci, pochi lag)</string>
+    <string name="audiobuf_small">Piccolo</string>
+    <string name="audiobuf_medium">Medio</string>
+    <string name="audiobuf_large">Grande (Vecchi device, se l'audio singhiozza)</string>
+    <string name="audiobuf_question">Dimensione buffer audio</string>
+
+    <string name="remap_hwkeys">Rimappatura tasti fisici</string>
+    <string name="remap_hwkeys_press">Premi qualunque stasto tranne HOME o POWER, puoi usare anche i tasti volume</string>
+    <string name="remap_hwkeys_select">Selezione codice SDL</string>
+    <string name="remap_hwkeys_select_simple">Scegli un'azione</string>
+    <string name="remap_hwkeys_select_more_keys">Mostra tutti i codici</string>
+
+    <string name="remap_screenkb">Rimappa i controlli a schermo</string>
+    <string name="remap_screenkb_joystick">Joystick</string>
+    <string name="remap_screenkb_button">Pulsante</string>
+    <string name="remap_screenkb_button_text">Bottone imput di testo</string>
+    <string name="remap_screenkb_button_gestures">Gestures a due dita</string>
+    <string name="remap_screenkb_button_gestures_sensitivity">Sensibilità gestures a due dita</string>
+    <string name="remap_screenkb_button_zoomin">Zoom in gesture a due dita</string>
+    <string name="remap_screenkb_button_zoomout">Zoom out gesture a due dita</string>
+    <string name="remap_screenkb_button_rotateleft">Rotazione a sinistra gesture a due dita</string>
+    <string name="remap_screenkb_button_rotateright">Rotazione a destra gesture a due dita</string>
+
+    <string name="screenkb_custom_layout">Personalizza aspetto tastiera a schermo</string>
+    <string name="screenkb_custom_layout_help">Premi BACK quando hai concluso. Ridimensiona i pulsanti scivolando negli spazi vuoti.</string>
+
+    <string name="calibrate_touchscreen">Calibrazione touchscreen</string>
+    <string name="calibrate_touchscreen_touch">Tocca tutti gli angoli dello schermo, premi BACK quando concluso</string>
+
+    <string name="video">Impostazioni video</string>
+    <string name="video_smooth">Filtraggio video lineare</string>
+    <string name="video_separatethread">Separando i thread per i video, potrai aumentare gli FPS per alcuni device</string>
+
+    <string name="text_edit_click_here">Premi per cominciare a scrivere, premi Enter quando concluso</string>
+
+    <string name="display_size_mouse">Modalità emulazione mouse</string>
+    <string name="display_size">Mostra dimensione per emulazione mouse</string>
+    <string name="display_size_large">Grande (tablet)</string>
+    <string name="display_size_small">Piccola, ingrandimento schermo</string>
+    <string name="display_size_small_touchpad">Piccola, modalità touchpad</string>
+    <string name="display_size_tiny">Stretta</string>
+    <string name="display_size_tiny_touchpad">Stretta, modalità touchpad</string>
+
+    <string name="show_more_options">Mostra più opzioni</string>
+
+    <string name="hardware_mouse_detected">Rilevato mouse esterno, disabilito emulazione mouse</string>
+
+    <string name="not_enough_ram">Non c'è più memoria RAM</string>
+    <string name="not_enough_ram_size">Questa applicazione ha bisogno di %1$d Mb RAM, il tuo dispositivo ha solo %2$d Mb</string>
+    <string name="ignore">Ignora</string>
+
+    <string name="calibrate_gyroscope">Calibra giroscopio</string>
+    <string name="calibrate_gyroscope_text">Appoggia il dispositivo su una superficie piana</string>
+    <string name="calibrate_gyroscope_not_supported">Il tuo dispositivo non possiede un giroscopio</string>
+
+    <string name="reset_config">Resetta le impostazioni</string>
+    <string name="reset_config_ask">Sei sicuro di voler resettare le impostazioni?</string>
+
+    <string name="cancel_download">Annullare il download dei dati?</string>
+    <string name="cancel_download_resume">Puoi riprenderli successivamente, i dati non saranno scaricati nuovamente.</string>
+    <string name="yes">Si</string>
+    <string name="no">No</string>
+    <string name="eula_refuse">Rifiuta</string>
+    <string name="eula_accept">Accetta</string>
+    <string name="eula_title">Accordi di licenza</string>
+    <string name="eula">Accettando questa EULA accetti di giocare a questo gioco solo possedendo una copia originale di Dune 2 - Westwood Studios.</string>
+    <string name="select_language">Scegli la lingua</string>
+</resources>
