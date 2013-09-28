@@ -68,7 +68,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.gamesinjs.dune2.adv.AdvertismentSystem;
+import com.gamesinjs.dune2.ControlButton;
+import com.gamesinjs.dune2.BillingThread;
+import com.gamesinjs.dune2.game.GameMode;
 import com.gamesinjs.dune2.eula.Eula;
 import com.gamesinjs.dune2.i18n.I18NUtils;
 import com.gamesinjs.dune2.language.LanguageSelector;
@@ -79,6 +81,9 @@ public class MainActivity extends Activity implements Eula.OnEulaAgreedTo, Langu
 	private Runnable initializer;
 	
 	public static String DATA_DIR_FLAG = " -d data-en/";
+	
+	private final static String APP_KEY = "<enter key here>";
+	private BillingThread billingThread;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -150,8 +155,6 @@ public class MainActivity extends Activity implements Eula.OnEulaAgreedTo, Langu
 
 		_ad = new Advertisement(this);
 		
-		AdvertismentSystem.setAdvertisment(_ad.getView(), this);
-		
 		if( _ad.getView() != null )
 		{
 			_videoLayout.addView(_ad.getView());
@@ -214,6 +217,17 @@ public class MainActivity extends Activity implements Eula.OnEulaAgreedTo, Langu
 		
 		initializer = new Callback(this);
 		Eula.show(this);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (billingThread != null) {
+			if (!billingThread.onActivityResult(requestCode, requestCode, data)) {
+				super.onActivityResult(requestCode, resultCode, data);
+			}
+		} else {
+			super.onActivityResult(requestCode, resultCode, data);
+		}
 	}
 	
 	@Override
@@ -337,6 +351,9 @@ public class MainActivity extends Activity implements Eula.OnEulaAgreedTo, Langu
 		// Receive keyboard events
 		DimSystemStatusBar.get().dim(_videoLayout);
 		DimSystemStatusBar.get().dim(mGLView);
+		
+		billingThread = new BillingThread(this, APP_KEY);
+		ControlButton.createFor(_videoLayout, this, billingThread);
 	}
 
 	@Override
@@ -408,7 +425,12 @@ public class MainActivity extends Activity implements Eula.OnEulaAgreedTo, Langu
 	@Override
 	protected void onDestroy()
 	{
-		AdvertismentSystem.free();
+		if (billingThread != null) {
+			billingThread.dispose();
+		}
+
+		GameMode.dispose();
+
 		if( downloader != null )
 		{
 			synchronized( downloader )
@@ -709,6 +731,9 @@ public class MainActivity extends Activity implements Eula.OnEulaAgreedTo, Langu
 			_ad.getView().getRight() > (int)ev.getX() &&
 			_ad.getView().getTop() <= (int)ev.getY() &&
 			_ad.getView().getBottom() > (int)ev.getY() )
+			return super.dispatchTouchEvent(ev);
+		else
+		if(ControlButton.dispatch(ev))
 			return super.dispatchTouchEvent(ev);
 		else
 		if(mGLView != null)
@@ -1056,7 +1081,7 @@ public class MainActivity extends Activity implements Eula.OnEulaAgreedTo, Langu
 			}
 		}
 		
-		AdvertismentSystem.init();
+		GameMode.listen();
 	}
 
 	public int getApplicationVersion()

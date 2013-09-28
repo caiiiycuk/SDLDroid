@@ -1,5 +1,7 @@
 package com.gamesinjs.dune2;
 
+import com.gamesinjs.dune2.game.GameMode;
+import com.gamesinjs.dune2.game.GameModeChangeListener;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,15 +14,16 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-public class ControlButton extends ImageButton {
+public class ControlButton extends ImageButton implements
+		GameModeChangeListener {
 
 	private static ControlButton instance = null;
 
-	// FIXME
-	private final static String DONATE_PURCHASE = "android.test.purchased";
-	private final static String DONATE_CANCELED = "android.test.canceled";
-	private final static String DONATE_REFUNDED = "android.test.refunded";
-	private final static String DONATE_UNAVAILABLE = "android.test.item_unavailable";
+	private final static String DONATE_5 = "android.test.purchased";
+	private final static String DONATE_15 = "android.test.purchased";
+	private final static String DONATE_25 = "android.test.purchased";
+
+	private final Activity activity;
 
 	public static void createFor(FrameLayout layout, Activity activity,
 			BillingThread billingThread) {
@@ -31,71 +34,54 @@ public class ControlButton extends ImageButton {
 	private ControlButton(final Activity activity,
 			final BillingThread billingThread) {
 		super(activity);
+		this.activity = activity;
+
 		setLayoutParams(new FrameLayout.LayoutParams(
 				ViewGroup.LayoutParams.WRAP_CONTENT,
-				ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM | Gravity.TOP));
+				ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM
+						| Gravity.TOP));
 		setImageResource(R.drawable.billing);
-		//setBackgroundColor(Color.TRANSPARENT);
-		//setPadding(3, 3, 3, 3);
+
 		setFocusable(false);
 		setId(1);
 		setClickable(true);
+
 		setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				final CharSequence[] items = {"Donate 5$", "Donate 15$", "Donate 25$", "Buy 5 tanks", "Buy 10 tanks", "Buy 15 tanks"};
+				final CharSequence[] items = {
+						getResources().getString(R.string.donate_5),
+						getResources().getString(R.string.donate_15),
+						getResources().getString(R.string.donate_25) };
 
 				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-				builder.setTitle("Pick a color");
+				builder.setTitle(R.string.donate);
 				builder.setItems(items, new DialogInterface.OnClickListener() {
-				    public void onClick(DialogInterface dialog, int item) {
-				        Toast.makeText(activity, items[item], Toast.LENGTH_SHORT).show();
-				    }
-				});
-				builder.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
+					public void onClick(DialogInterface dialog, int item) {
+						switch (item) {
+						case 0:
+							billingThread.purchase(DONATE_5);
+						case 1:
+							billingThread.purchase(DONATE_15);
+						case 2:
+							billingThread.purchase(DONATE_25);
+						}
 					}
 				});
+				builder.setNegativeButton(R.string.donate_cancel,
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+							}
+						});
 				AlertDialog alert = builder.create();
 				alert.show();
-				
-//				PopupMenu popup = new PopupMenu(activity, v);
-//				MenuInflater inflater = popup.getMenuInflater();
-//				inflater.inflate(R.menu.popupmenu, popup.getMenu());
-//				popup.show();
-//
-//				popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-//
-//					@Override
-//					public boolean onMenuItemClick(MenuItem item) {
-//						if (item.getItemId() == R.id.menu1) {
-//							billingThread.purchase(DONATE_PURCHASE);
-//							return true;
-//						}
-//						
-//						if (item.getItemId() == R.id.menu3) {
-//							billingThread.purchase(DONATE_REFUNDED);
-//							return true;
-//						}
-//						
-//						if (item.getItemId() == R.id.menu2) {
-//							billingThread.purchase(DONATE_CANCELED);
-//							return true;
-//						}
-//						
-//						if (item.getItemId() == R.id.menu4) {
-//							billingThread.purchase(DONATE_UNAVAILABLE);
-//							return true;
-//						}
-//
-//						return false;
-//					}
-//				});
-
 			}
 		});
+
+		GameMode.setGameModeChangeListener(this);
 	}
 
 	public static boolean dispatch(MotionEvent ev) {
@@ -115,6 +101,20 @@ public class ControlButton extends ImageButton {
 		}
 
 		return false;
+	}
+
+	@Override
+	public void onGameModeChanged(final int gameMode) {
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				if (gameMode == GameMode.GM_MENU) {
+					ControlButton.this.setVisibility(View.VISIBLE);
+				} else {
+					ControlButton.this.setVisibility(View.GONE);
+				}
+			}
+		});
 	}
 
 }
