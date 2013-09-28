@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <group android:id="@+id/group_popupmenu" >
+        <item
+            android:id="@+id/menu1"
+            android:title="OK"/>
+        <item
+            android:id="@+id/menu2"
+            android:title="CANCLE"/>
+        <item
+            android:id="@+id/menu3"
+            android:title="REFUNDED"/>
+        <item
+            android:id="@+id/menu4"
+            android:title="UNAVAIL"/>
+    </group>
+
+</menu>

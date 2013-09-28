@@ -1214,11 +1214,6 @@ else
 	cat $F | sed "s/package .*;/package $AppFullName;/" >> project/src/Advertisement.java
 fi
 
-cat project/java/dune2/adv/AdvertismentSystem.java >> project/src/AdvertismentSystem.java
-cat project/java/dune2/eula/Eula.java >> project/src/Eula.java
-cat project/java/dune2/language/LanguageSelector.java >> project/src/LanguageSelector.java
-cat project/java/dune2/i18n/I18NUtils.java >> project/src/I18NUtils.java
-
 if [ "$AppRecordsAudio" = "n" -o -z "$AppRecordsAudio" ] ; then
 	$SEDI "/==RECORD_AUDIO==/ d" project/AndroidManifest.xml
 fi

@@ -1,6 +1,6 @@
 package com.gamesinjs.dune2.language;
 
-import com.gamesinjs.dune2.R;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,7 +9,7 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.content.SharedPreferences;
 
-import java.util.Locale;
+import com.gamesinjs.dune2.R;
 
 public class LanguageSelector {
 	
