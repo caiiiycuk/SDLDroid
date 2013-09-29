@@ -7,8 +7,9 @@
     <string name="eula_title">Пользовательское соглашение</string>
     <string name="eula">Принимая данное соглашение, вы соглашаетесь, что можете играть в эту игру, только если у вас есть собственная легальная копия игры Дюна 2 от Westwood Studios.</string>
     <string name="donate">Пожертвовать</string>
-    <string name="donate_5">Пожертвовать 5$</string>
-    <string name="donate_15">Пожертвовать 15$</string>
-    <string name="donate_25">Пожертвовать 25$</string>
+    <string name="donate_1">Пожертвовать 30 руб.</string>
+    <string name="donate_5">Пожертвовать 150 руб.</string>
+    <string name="donate_15">Пожертвовать 500 руб.</string>
+    <string name="donate_25">Пожертвовать 750 руб.</string>
     <string name="donate_cancel">Отмена</string>
 </resources>

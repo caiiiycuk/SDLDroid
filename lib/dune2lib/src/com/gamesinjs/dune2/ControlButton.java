@@ -1,8 +1,5 @@
 package com.gamesinjs.dune2;
 
-import com.gamesinjs.dune2.game.GameMode;
-import com.gamesinjs.dune2.game.GameModeChangeListener;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,16 +9,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.Toast;
+
+import com.gamesinjs.dune2.game.GameMode;
+import com.gamesinjs.dune2.game.GameModeChangeListener;
 
 public class ControlButton extends ImageButton implements
 		GameModeChangeListener {
 
 	private static ControlButton instance = null;
 
-	private final static String DONATE_5 = "android.test.purchased";
-	private final static String DONATE_15 = "android.test.purchased";
-	private final static String DONATE_25 = "android.test.purchased";
+	//private final static String DONATE_1 = "android.test.purchased";
+	private final static String DONATE_1 	= "donate_1";
+	private final static String DONATE_5 	= "donate_5";
+	private final static String DONATE_15 	= "donate_15";
+	//private final static String DONATE_25 = "donate_25";
 
 	private final Activity activity;
 
@@ -51,21 +52,24 @@ public class ControlButton extends ImageButton implements
 			@Override
 			public void onClick(View v) {
 				final CharSequence[] items = {
+						getResources().getString(R.string.donate_1),
 						getResources().getString(R.string.donate_5),
-						getResources().getString(R.string.donate_15),
-						getResources().getString(R.string.donate_25) };
+						getResources().getString(R.string.donate_15) };
 
 				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 				builder.setTitle(R.string.donate);
 				builder.setItems(items, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int item) {
+					public void onClick(DialogInterface dialog, final int item) {
 						switch (item) {
 						case 0:
-							billingThread.purchase(DONATE_5);
+							billingThread.purchase(DONATE_1);
+							break;
 						case 1:
-							billingThread.purchase(DONATE_15);
+							billingThread.purchase(DONATE_5);
+							break;
 						case 2:
-							billingThread.purchase(DONATE_25);
+							billingThread.purchase(DONATE_15);
+							break;
 						}
 					}
 				});

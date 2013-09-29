@@ -17,6 +17,8 @@ import com.gamesinjs.billing.Purchase;
 
 public class BillingThread extends Thread {
 
+	private static final int RESPONSE_CODE = 1001;
+
 	private static final long SLEEP_TIME = 1000;
 
 	private final Activity activity;
@@ -30,7 +32,7 @@ public class BillingThread extends Thread {
 	private IabHelper helper;
 
 	private String skuToBuy;
-	
+
 	public BillingThread(Activity activity, String appKey) {
 		setName("Billing thread");
 		setDaemon(true);
@@ -56,7 +58,7 @@ public class BillingThread extends Thread {
 			helper = null;
 		}
 	}
-	
+
 	@Override
 	public void run() {
 		while (alive.get()) {
@@ -70,48 +72,14 @@ public class BillingThread extends Thread {
 				try {
 					Inventory inventory = helper.queryInventory(false, null);
 					Purchase purchase = inventory.getPurchase(skuToBuy);
-					
+
 					if (purchase != null) {
 						helper.consume(purchase);
 					}
-					
-					pendingAsync.set(true);
-					
-					helper.launchPurchaseFlow(activity, skuToBuy, 1001, new OnIabPurchaseFinishedListener() {
-						@Override
-						public void onIabPurchaseFinished(final IabResult result, Purchase info) {
-							if (result.isFailure()) {
-								handler.post(new Runnable() {
-									@Override
-									public void run() {
-										Toast.makeText(activity,
-											"Unable to purchase: " + result,
-											Toast.LENGTH_LONG).show();
-									}
-								});
-								helper.dispose();
-								helper = null;
-							} else {
-								handler.post(new Runnable() {
-									@Override
-									public void run() {
-										Toast.makeText(activity, "Thank you!",
-											Toast.LENGTH_SHORT).show();							
-									}
-								});
-							}
-							
-							pendingAsync.set(false);
-						}
-					});
+
+					launchPurchaseFlow(skuToBuy, RESPONSE_CODE);
 				} catch (final IabException e) {
-					handler.post(new Runnable() {
-						@Override
-						public void run() {
-							Toast.makeText(activity, e.getMessage(),
-									Toast.LENGTH_LONG).show();							
-						}
-					});
+					message(e.getMessage());
 
 					helper.dispose();
 					helper = null;
@@ -128,36 +96,51 @@ public class BillingThread extends Thread {
 			}
 		}
 	}
-	
+
+	private void launchPurchaseFlow(final String skuToBuy,
+			final int responseCode) {
+		handler.post(new Runnable() {
+			@Override
+			public void run() {
+				pendingAsync.set(true);
+
+				helper.launchPurchaseFlow(activity, skuToBuy, responseCode,
+						new OnIabPurchaseFinishedListener() {
+							@Override
+							public void onIabPurchaseFinished(
+									final IabResult result, Purchase info) {
+								if (result.isFailure()) {
+									message("Unable to purchase: " + result);
+									helper.dispose();
+									helper = null;
+								} else {
+									message("Thank you!");
+								}
+
+								pendingAsync.set(false);
+							}
+						});
+			}
+		});
+	}
+
 	public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (helper == null) {
 			return false;
 		}
-		
-        return helper.handleActivityResult(requestCode, resultCode, data);
+
+		return helper.handleActivityResult(requestCode, resultCode, data);
 	}
-	
+
 	public void purchase(String sku) {
 		if (pendingAsync.get() || skuToBuy != null) {
-			handler.post(new Runnable() {
-				@Override
-				public void run() {
-					Toast.makeText(activity, "Billing service is busy",
-							Toast.LENGTH_LONG).show();							
-				}
-			});
+			message("Billing service is busy");
 			return;
 		}
-		
+
 		skuToBuy = sku;
-		
-		handler.post(new Runnable() {
-			@Override
-			public void run() {
-				Toast.makeText(activity, "Please wait, connecting...",
-						Toast.LENGTH_LONG).show();							
-			}
-		});
+
+		message("Please wait, connecting...");
 	}
 
 	private void init(final String sku) {
@@ -172,15 +155,7 @@ public class BillingThread extends Thread {
 			@Override
 			public void onIabSetupFinished(final IabResult result) {
 				if (!result.isSuccess()) {
-					handler.post(new Runnable() {
-						@Override
-						public void run() {
-							Toast.makeText(activity,
-								"Problem setting up In-app Billing: " + result,
-								Toast.LENGTH_LONG).show();						
-						}
-					});
-
+					message("Problem setting up In-app Billing: " + result);
 					helper.dispose();
 					helper = null;
 				} else {
@@ -191,7 +166,16 @@ public class BillingThread extends Thread {
 			}
 		});
 	}
-	
+
+	private void message(final String text) {
+		handler.post(new Runnable() {
+			@Override
+			public void run() {
+				Toast.makeText(activity, text, Toast.LENGTH_LONG).show();
+			}
+		});
+	}
+
 	private boolean isInited() {
 		return helper != null && helper.ismSetupDone();
 	}
