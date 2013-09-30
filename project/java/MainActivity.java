@@ -222,7 +222,7 @@ public class MainActivity extends Activity implements Eula.OnEulaAgreedTo, Langu
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (billingThread != null) {
-			if (!billingThread.onActivityResult(requestCode, requestCode, data)) {
+			if (!billingThread.onActivityResult(requestCode, resultCode, data)) {
 				super.onActivityResult(requestCode, resultCode, data);
 			}
 		} else {

@@ -75,6 +75,12 @@ public class BillingThread extends Thread {
 
 					if (purchase != null) {
 						helper.consume(purchase);
+						
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							break;
+						}
 					}
 
 					launchPurchaseFlow(skuToBuy, RESPONSE_CODE);
@@ -109,7 +115,9 @@ public class BillingThread extends Thread {
 							@Override
 							public void onIabPurchaseFinished(
 									final IabResult result, Purchase info) {
-								if (result.isFailure()) {
+								if (result.getResponse() == IabHelper.IABHELPER_USER_CANCELLED) {
+									//do nothing user want buy
+								} else if (result.isFailure()) {
 									message("Unable to purchase: " + result);
 									helper.dispose();
 									helper = null;

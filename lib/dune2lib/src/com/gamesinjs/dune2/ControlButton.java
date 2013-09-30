@@ -18,8 +18,8 @@ public class ControlButton extends ImageButton implements
 
 	private static ControlButton instance = null;
 
-	//private final static String DONATE_1 = "android.test.purchased";
-	private final static String DONATE_1 	= "donate_1";
+	private final static String DONATE_1 = "android.test.purchased";
+	//private final static String DONATE_1 	= "donate_1";
 	private final static String DONATE_5 	= "donate_5";
 	private final static String DONATE_15 	= "donate_15";
 	//private final static String DONATE_25 = "donate_25";
