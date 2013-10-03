@@ -1,14 +1,16 @@
 package com.gamesinjs.dune2;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.gamesinjs.dune2.game.GameMode;
 import com.gamesinjs.dune2.game.GameModeChangeListener;
@@ -18,12 +20,6 @@ public class ControlButton extends ImageButton implements
 
 	private static ControlButton instance = null;
 
-	//private final static String DONATE_1 = "android.test.purchased";
-	private final static String DONATE_1 	= "donate_1";
-	private final static String DONATE_5 	= "donate_5";
-	private final static String DONATE_15 	= "donate_15";
-	//private final static String DONATE_25 = "donate_25";
-
 	private final Activity activity;
 
 	public static void createFor(FrameLayout layout, Activity activity,
@@ -32,58 +28,42 @@ public class ControlButton extends ImageButton implements
 		layout.addView(instance);
 	}
 
+	private final DonateClickListener donateClickListener;
+	private final ReinforcementClickListener reinforcementClickListener;
+
 	private ControlButton(final Activity activity,
 			final BillingThread billingThread) {
 		super(activity);
 		this.activity = activity;
+		this.donateClickListener = new DonateClickListener(activity,
+				billingThread);
+		this.reinforcementClickListener = new ReinforcementClickListener(
+				activity, billingThread);
 
-		setLayoutParams(new FrameLayout.LayoutParams(
+		LayoutParams layoutParams = new FrameLayout.LayoutParams(
 				ViewGroup.LayoutParams.WRAP_CONTENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM
-						| Gravity.TOP));
-		setImageResource(R.drawable.billing);
+						| Gravity.TOP);
 
-		setFocusable(false);
+		DisplayMetrics dm = getResources().getDisplayMetrics();
+		int size = Math.round(TypedValue.applyDimension(
+				TypedValue.COMPLEX_UNIT_DIP, 34, dm));
+		int padding = Math.round(TypedValue.applyDimension(
+				TypedValue.COMPLEX_UNIT_DIP, 8, dm));
+
+		setPadding(padding, padding, padding, padding);
+		setScaleType(ImageView.ScaleType.FIT_CENTER);
+
+		layoutParams.width = size;
+		layoutParams.height = size;
+
+		setLayoutParams(layoutParams);
+
 		setId(1);
+		setFocusable(false);
+		setImageResource(R.drawable.billing);
 		setClickable(true);
-
-		setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				final CharSequence[] items = {
-						getResources().getString(R.string.donate_1),
-						getResources().getString(R.string.donate_5),
-						getResources().getString(R.string.donate_15) };
-
-				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-				builder.setTitle(R.string.donate);
-				builder.setItems(items, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, final int item) {
-						switch (item) {
-						case 0:
-							billingThread.purchase(DONATE_1);
-							break;
-						case 1:
-							billingThread.purchase(DONATE_5);
-							break;
-						case 2:
-							billingThread.purchase(DONATE_15);
-							break;
-						}
-					}
-				});
-				builder.setNegativeButton(R.string.donate_cancel,
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-							}
-						});
-				AlertDialog alert = builder.create();
-				alert.show();
-			}
-		});
+		setOnClickListener(donateClickListener);
 
 		GameMode.setGameModeChangeListener(this);
 	}
@@ -113,6 +93,28 @@ public class ControlButton extends ImageButton implements
 			@Override
 			public void run() {
 				if (gameMode == GameMode.GM_MENU) {
+					setImageResource(R.drawable.billing);
+					setOnClickListener(donateClickListener);
+					ControlButton.this.setVisibility(View.VISIBLE);
+				} else if (gameMode == GameMode.GM_MAP) {
+					switch (GameMode.playerHouse()) {
+						case GameMode.HOUSE_ATREIDES:
+							setImageResource(R.drawable.sonic_tank);
+							break;
+	
+						case GameMode.HOUSE_ORDOS:
+							setImageResource(R.drawable.deviator);
+							break;
+	
+						case GameMode.HOUSE_HARKONNEN:
+							setImageResource(R.drawable.devastator);
+							break;
+							
+						default:
+							setImageResource(R.drawable.siege_tank);
+					}
+
+					setOnClickListener(reinforcementClickListener);
 					ControlButton.this.setVisibility(View.VISIBLE);
 				} else {
 					ControlButton.this.setVisibility(View.GONE);

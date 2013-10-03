@@ -28,6 +28,8 @@ public class BillingThread extends Thread {
 	private final AtomicBoolean alive;
 	private final AtomicBoolean pendingForSetup;
 	private final AtomicBoolean pendingAsync;
+	
+	private PurchaseListener purchaseListener;
 
 	private IabHelper helper;
 
@@ -85,8 +87,9 @@ public class BillingThread extends Thread {
 
 					launchPurchaseFlow(skuToBuy, RESPONSE_CODE);
 				} catch (final IabException e) {
+					fireFailure();
+					
 					message(e.getMessage());
-
 					helper.dispose();
 					helper = null;
 				}
@@ -117,12 +120,15 @@ public class BillingThread extends Thread {
 									final IabResult result, Purchase info) {
 								if (result.getResponse() == IabHelper.IABHELPER_USER_CANCELLED) {
 									//do nothing user want buy
+									fireFailure();
 								} else if (result.isFailure()) {
-									message("Unable to purchase: " + result);
+									fireFailure();
+									
+									message(R.string.unable_to_purchase, result.toString());
 									helper.dispose();
 									helper = null;
 								} else {
-									message("Thank you!");
+									fireSuccess();
 								}
 
 								pendingAsync.set(false);
@@ -130,6 +136,22 @@ public class BillingThread extends Thread {
 						});
 			}
 		});
+	}
+	
+	private void fireSuccess() {
+		if (purchaseListener != null) {
+			purchaseListener.success();
+			purchaseListener = null;
+		} else {
+			message(R.string.thank_you);	
+		}
+	}
+
+	private void fireFailure() {
+		if (purchaseListener != null) {
+			purchaseListener.fail();
+			purchaseListener = null;
+		}
 	}
 
 	public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -141,14 +163,24 @@ public class BillingThread extends Thread {
 	}
 
 	public void purchase(String sku) {
+		purchase(sku, purchaseListener);
+	}
+	
+	public void purchase(String sku, PurchaseListener purchaseListener) {
 		if (pendingAsync.get() || skuToBuy != null) {
-			message("Billing service is busy");
+			message(R.string.billing_busy);
+			
+			if (purchaseListener != null) {
+				purchaseListener.fail();
+			}
+			
 			return;
 		}
 
 		skuToBuy = sku;
+		this.purchaseListener = purchaseListener;
 
-		message("Please wait, connecting...");
+		message(R.string.connecting);
 	}
 
 	private void init(final String sku) {
@@ -163,7 +195,8 @@ public class BillingThread extends Thread {
 			@Override
 			public void onIabSetupFinished(final IabResult result) {
 				if (!result.isSuccess()) {
-					message("Problem setting up In-app Billing: " + result);
+					fireFailure();
+					message(R.string.billing_setup_problem, result.toString());
 					helper.dispose();
 					helper = null;
 				} else {
@@ -175,13 +208,21 @@ public class BillingThread extends Thread {
 		});
 	}
 
-	private void message(final String text) {
+	private void message(final String message) {
 		handler.post(new Runnable() {
 			@Override
 			public void run() {
-				Toast.makeText(activity, text, Toast.LENGTH_LONG).show();
+				Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
 			}
 		});
+	}
+	
+	private void message(int resource) {
+		message(activity.getResources().getString(resource));
+	}
+	
+	private void message(int resource, String detailed) {
+		message(activity.getResources().getString(resource) + detailed);
 	}
 
 	private boolean isInited() {

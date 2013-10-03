@@ -12,5 +12,18 @@
     <string name="donate_15">Donate 15$</string>
     <string name="donate_25">Donate 25$</string>
     <string name="donate_cancel">Cancel</string>
+    <string name="combat_tank">Combat tank</string>
+    <string name="siege_tank">Siege tank</string>
+    <string name="sonic_tank">Sonic tank</string>
+    <string name="deviator">Deviator</string>
+    <string name="devastator">Devastator</string>
+    <string name="too_many_units">Too many units</string>
+    <string name="billing_busy">Billing service is busy</string>
+    <string name="connecting">Please wait, connecting&#8230;</string>
+    <string name="thank_you">Thank you!</string>
+    <string name="billing_setup_problem">Problem setting up In-app Billing: </string>
+    <string name="unable_to_purchase">Unable to purchase: </string>
+    <string name="reinforcement">Reinforcement</string>
+    <string name="reinforcement_cancel">Cancel</string>
 
 </resources>
