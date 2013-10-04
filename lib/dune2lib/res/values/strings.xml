@@ -12,11 +12,11 @@
     <string name="donate_15">Donate 15$</string>
     <string name="donate_25">Donate 25$</string>
     <string name="donate_cancel">Cancel</string>
-    <string name="combat_tank">Combat tank</string>
-    <string name="siege_tank">Siege tank</string>
-    <string name="sonic_tank">Sonic tank</string>
-    <string name="deviator">Deviator</string>
-    <string name="devastator">Devastator</string>
+    <string name="combat_tank">6 Combat tanks</string>
+    <string name="siege_tank">4 Siege tanks</string>
+    <string name="sonic_tank">3 Sonic tanks</string>
+    <string name="deviator">4 Deviators</string>
+    <string name="devastator">3 Devastators</string>
     <string name="too_many_units">Too many units</string>
     <string name="billing_busy">Billing service is busy</string>
     <string name="connecting">Please wait, connecting&#8230;</string>
