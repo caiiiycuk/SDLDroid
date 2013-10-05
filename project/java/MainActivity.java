@@ -68,7 +68,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.gamesinjs.dune2.ControlButton;
+import com.gamesinjs.dune2.ControlBar;
 import com.gamesinjs.dune2.BillingThread;
 import com.gamesinjs.dune2.game.GameMode;
 import com.gamesinjs.dune2.eula.Eula;
@@ -353,7 +353,7 @@ public class MainActivity extends Activity implements Eula.OnEulaAgreedTo, Langu
 		DimSystemStatusBar.get().dim(mGLView);
 		
 		billingThread = new BillingThread(this, APP_KEY);
-		ControlButton.createFor(_videoLayout, this, billingThread);
+		ControlBar.createFor(_videoLayout, this, billingThread);
 	}
 
 	@Override
@@ -733,7 +733,7 @@ public class MainActivity extends Activity implements Eula.OnEulaAgreedTo, Langu
 			_ad.getView().getBottom() > (int)ev.getY() )
 			return super.dispatchTouchEvent(ev);
 		else
-		if(ControlButton.dispatch(ev))
+		if(ControlBar.dispatch(ev))
 			return super.dispatchTouchEvent(ev);
 		else
 		if(mGLView != null)

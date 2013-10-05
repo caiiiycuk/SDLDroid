@@ -25,5 +25,10 @@
     <string name="unable_to_purchase">Не удалость приобрести: </string>
     <string name="reinforcement">Подкрепление</string>
     <string name="reinforcement_cancel">Отмена</string>
+    <string name="restart_the_game">Перезагрузите игру что бы применить изменения</string>
+    <string name="options">Настройки</string>
+    <string name="enable_offset">Включить смещение при постройке</string>
+    <string name="disable_offset">Отключить смещение при постройке</string>
+    <string name="cancel">Отмена</string>
 
 </resources>

@@ -25,5 +25,10 @@
     <string name="unable_to_purchase">Unable to purchase: </string>
     <string name="reinforcement">Reinforcement</string>
     <string name="reinforcement_cancel">Cancel</string>
+    <string name="restart_the_game">Restart the game to apply changes</string>
+    <string name="options">Options</string>
+    <string name="enable_offset">Enable structure placement offset</string>
+    <string name="disable_offset">Disable structure placement offset</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

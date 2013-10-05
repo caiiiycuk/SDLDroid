@@ -3,25 +3,19 @@ package com.gamesinjs.dune2.language;
 import java.util.Locale;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
-import android.content.DialogInterface.OnClickListener;
 import android.content.SharedPreferences;
-
-import com.gamesinjs.dune2.R;
 
 public class LanguageSelector {
 	
-	private static final String PREFERENCE_LANGUAGE_SUFFIX = "language.suffix";
-	private static final String PREFERENCES_LANGUAGE = "language";
+	public static final String PREFERENCE_LANGUAGE_SUFFIX = "language.suffix";
+	public static final String PREFERENCES_LANGUAGE = "language";
 	
-	private static final CharSequence[] LANGUAGES = {
+	public static final CharSequence[] LANGUAGES = {
 		"English",
 		"Русский"
 	};
 	
-	private static final String[] LANGUAGE_SUFFIXES = {
+	public static final String[] LANGUAGE_SUFFIXES = {
 		"-en",
 		"-ru"
 	};
@@ -31,54 +25,24 @@ public class LanguageSelector {
 	}
 
 	public static void show(final Activity activity) {
-		if (systemLanguage(activity)) {
-			return;
-		}
-		
 		final SharedPreferences preferences = activity.getSharedPreferences(
 				PREFERENCES_LANGUAGE, Activity.MODE_PRIVATE);
 
-		final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-
-		builder.setTitle(R.string.select_language);
-		builder.setItems(LANGUAGES, new OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				String suffix = LANGUAGE_SUFFIXES[which];
-				
-				preferences.edit()
-					.putString(PREFERENCE_LANGUAGE_SUFFIX, suffix)
-					.commit();
-				
-				selectLanguageSuffix(activity, suffix);
-				dialog.dismiss();
-			}
-		});
+		String suffix = preferences.getString(PREFERENCE_LANGUAGE_SUFFIX, systemSuffix());
 		
-		builder.setOnCancelListener(new OnCancelListener() {
-			@Override
-			public void onCancel(DialogInterface dialog) {
-				selectLanguageSuffix(activity, LANGUAGE_SUFFIXES[0]);
-				dialog.dismiss();
-			}
-		});
-
-		AlertDialog alert = builder.create();
-		alert.setOwnerActivity(activity);
-		alert.show();
+		selectLanguageSuffix(activity, suffix);
 	}
 
-	private static boolean systemLanguage(final Activity activity) {
+	private static String systemSuffix() {
 		String suffix = "-" + Locale.getDefault().getLanguage();
 		
 		for (String candidate: LANGUAGE_SUFFIXES) {
 			if (candidate.equalsIgnoreCase(suffix)) {
-				selectLanguageSuffix(activity, candidate);
-				return true;
+				return suffix;
 			}
 		}
 		
-		return false;
+		return LANGUAGE_SUFFIXES[0];
 	}
 
 	private static void selectLanguageSuffix(Activity activity, String suffix) {

@@ -86,5 +86,7 @@ public class GameMode extends Thread {
 	public static native void placeUnits(long[] units);
 
 	public static native void freeUnits(long[] units);
+	
+	public static native void offsetMode(boolean enabled);
 
 }
