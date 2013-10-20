@@ -12,8 +12,8 @@
     <string name="donate_15">Donate 15$</string>
     <string name="donate_25">Donate 25$</string>
     <string name="donate_cancel">Cancel</string>
-    <string name="combat_tank">6 Combat tanks</string>
-    <string name="siege_tank">4 Siege tanks</string>
+    <string name="rocket_launcher">4 Rocket launchers</string>
+    <string name="siege_tank">5 Siege tanks</string>
     <string name="sonic_tank">3 Sonic tanks</string>
     <string name="deviator">4 Deviators</string>
     <string name="devastator">3 Devastators</string>

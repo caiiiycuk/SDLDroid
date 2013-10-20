@@ -12,8 +12,8 @@
     <string name="donate_15">Пожертвовать 500 руб.</string>
     <string name="donate_25">Пожертвовать 750 руб.</string>
     <string name="donate_cancel">Отмена</string>
-    <string name="combat_tank">3 Боевых танка</string>
-    <string name="siege_tank">4 Осадных танка</string>
+    <string name="rocket_launcher">4 Ракeтных танка</string>
+    <string name="siege_tank">5 Осадных танка</string>
     <string name="sonic_tank">3 Звуковых танка</string>
     <string name="deviator">4 Девиатора</string>
     <string name="devastator">3 Девастатора</string>

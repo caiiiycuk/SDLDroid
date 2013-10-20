@@ -16,9 +16,9 @@ import com.gamesinjs.dune2.game.GameMode;
 
 public class ReinforcementClickListener implements OnClickListener {
 
-	private static final int UNIT_INVALID = -1;
-	private final static int UNIT_DEVIATOR = 8;
-	private final static int UNIT_TANK = 9;
+	private static final int UNIT_INVALID    = -1;
+	private final static int UNIT_DEVIATOR   = 8;
+	private final static int UNIT_LAUNCHER   = 7;
 	private final static int UNIT_SIEGE_TANK = 10;
 	private final static int UNIT_DEVASTATOR = 11;
 	private final static int UNIT_SONIC_TANK = 12;
@@ -32,16 +32,16 @@ public class ReinforcementClickListener implements OnClickListener {
 	static {
 		unitMap = new SparseArray<UnitSku[]>();
 		unitMap.put(GameMode.HOUSE_ATREIDES, new UnitSku[] {
-				new UnitSku(R.string.combat_tank, UNIT_TANK, 6, "combats"),
-				new UnitSku(R.string.siege_tank, UNIT_SIEGE_TANK, 4, "sieges"),
+				new UnitSku(R.string.rocket_launcher, UNIT_LAUNCHER, 4, "rocket_launcher"),
+				new UnitSku(R.string.siege_tank, UNIT_SIEGE_TANK, 5, "sieges"),
 				new UnitSku(R.string.sonic_tank, UNIT_SONIC_TANK, 3, "sonics") });
 		unitMap.put(GameMode.HOUSE_ORDOS, new UnitSku[] {
-				new UnitSku(R.string.combat_tank, UNIT_TANK, 6, "combats"),
-				new UnitSku(R.string.siege_tank, UNIT_SIEGE_TANK, 4, "sieges"),
+				new UnitSku(R.string.rocket_launcher, UNIT_LAUNCHER, 4, "rocket_launcher"),
+				new UnitSku(R.string.siege_tank, UNIT_SIEGE_TANK, 5, "sieges"),
 				new UnitSku(R.string.deviator, UNIT_DEVIATOR, 4, "deviators") });
 		unitMap.put(GameMode.HOUSE_HARKONNEN, new UnitSku[] {
-				new UnitSku(R.string.combat_tank, UNIT_TANK, 6, "combats"),
-				new UnitSku(R.string.siege_tank, UNIT_SIEGE_TANK, 4, "sieges"),
+				new UnitSku(R.string.rocket_launcher, UNIT_LAUNCHER, 4, "rocket_launcher"),
+				new UnitSku(R.string.siege_tank, UNIT_SIEGE_TANK, 5, "sieges"),
 				new UnitSku(R.string.devastator, UNIT_DEVASTATOR, 3, "devastators") });
 	}
 	
