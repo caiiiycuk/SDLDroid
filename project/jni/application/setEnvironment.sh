@@ -47,11 +47,12 @@ done
 
 MISSING_INCLUDE=
 MISSING_LIB=
-#-O2 -DNDEBUG
+
 CFLAGS="\
+-DUSE_TOUCHSCREEN \
 -fpic -ffunction-sections -funwind-tables -fstack-protector \
 -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float \
--mthumb -O2 -g -DDEBUG \
+-mthumb -O2 -DNDEBUG -DDEBUG \
 -fomit-frame-pointer -fno-strict-aliasing -finline-limit=300 \
 -DANDROID -Wall -Wno-unused -Wa,--noexecstack -Wformat -Werror=format-security \
 -isystem$NDK/platforms/$PLATFORMVER/arch-arm/usr/include \
