@@ -51,7 +51,7 @@ MISSING_LIB=
 CFLAGS="\
 -fpic -ffunction-sections -funwind-tables -fstack-protector \
 -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float \
--mthumb -O2 -g -DNDEBUG \
+-mthumb -O2 -DNDEBUG \
 -fomit-frame-pointer -fno-strict-aliasing -finline-limit=300 \
 -DANDROID -Wall -Wno-unused -Wa,--noexecstack -Wformat -Werror=format-security \
 -isystem$NDK/platforms/$PLATFORMVER/arch-arm/usr/include \
