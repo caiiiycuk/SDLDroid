@@ -677,15 +677,15 @@ static void ProcessMouseMultitouch( int action, int pointerId )
 		{
 			SDL_ANDROID_MainThreadPushMouseButton( SDL_RELEASED, SDL_BUTTON_LEFT );
 			if( rightMouseButtonLongPress )
-				SDL_ANDROID_MainThreadPushMouseButton( (action == MOUSE_DOWN) ? SDL_PRESSED : SDL_RELEASED, SDL_BUTTON_RIGHT );
+				SDL_ANDROID_MainThreadPushMouseButton( (action == MOUSE_DOWN) ? SDL_PRESSED : SDL_RELEASED, SDL_BUTTON_MIDDLE );
 			else
 			{
 				if( action == MOUSE_UP )
 				{
 					if( !multitouchGestureHappened )
 					{
-						SDL_ANDROID_MainThreadPushMouseButton( SDL_PRESSED, SDL_BUTTON_RIGHT );
-						SDL_ANDROID_MainThreadPushMouseButton( SDL_RELEASED, SDL_BUTTON_RIGHT );
+						SDL_ANDROID_MainThreadPushMouseButton( SDL_PRESSED, SDL_BUTTON_MIDDLE );
+						SDL_ANDROID_MainThreadPushMouseButton( SDL_RELEASED, SDL_BUTTON_MIDDLE );
 					}
 				}
 				multitouchGestureHappened = 0;
