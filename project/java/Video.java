@@ -647,6 +647,78 @@ class DemoRenderer extends GLSurfaceView_SDL.Renderer
 		mGlContextLost = true;
 		nativeGlContextLost();
 	};
+	
+	private static class ResoultionSize {
+		private final int width;
+		private final int height;
+
+		public ResoultionSize(int width, int height) {
+			this.width = width;
+			this.height = height;
+		}
+
+		public ResoultionSize(android.graphics.Point size) {
+			this(size.x, size.y);
+		}
+
+		public double match(ResoultionSize target) {
+			double xScale = (double) width / target.width;
+			double yScale = (double) height / target.height;
+			
+			if (xScale > 1 || yScale > 1) {
+				return 0;
+			}
+			
+			return Math.min(xScale, yScale);
+		}
+
+		@Override
+		public String toString() {
+			return width + "x" + height;
+		}
+	}
+	
+	private static ResoultionSize[] acceptableResolutions = new ResoultionSize[] {
+		new ResoultionSize(640, 480),
+		new ResoultionSize(800, 480),
+		new ResoultionSize(800, 600),
+		new ResoultionSize(1024, 768),
+		new ResoultionSize(1280, 800),
+		new ResoultionSize(1280, 960),
+		new ResoultionSize(1280, 1024),
+		new ResoultionSize(1400, 1050),
+		new ResoultionSize(1600, 1200),
+		new ResoultionSize(1680, 1050)
+	};
+	
+	private ResoultionSize getBestResolution() {
+		android.graphics.Point displaySize = new android.graphics.Point();
+		
+		android.view.Display display = context.getWindowManager().getDefaultDisplay();
+		
+		if (android.os.Build.VERSION.SDK_INT >= 13) {
+			display.getSize(displaySize);
+		} else {
+			displaySize.set(display.getWidth(), display.getHeight());
+		}
+		
+		ResoultionSize target = new ResoultionSize(displaySize);
+		ResoultionSize closest = acceptableResolutions[0];
+
+		for (int i = 1; i < acceptableResolutions.length; ++i) {
+			ResoultionSize candidate = acceptableResolutions[i];
+			double candidateMatch = candidate.match(target);
+			double closestMatch = closest.match(target);
+
+			if (candidateMatch > closestMatch) {
+				closest = candidate;
+			}
+		}
+
+		Log.i("SDL", "Best resouliton for " + target + " is " + closest);
+
+		return closest;
+	}
 
 	public void onDrawFrame(GL10 gl) {
 
@@ -676,7 +748,7 @@ class DemoRenderer extends GLSurfaceView_SDL.Renderer
 			Thread.currentThread().setPriority( (Thread.NORM_PRIORITY + Thread.MIN_PRIORITY) / 2 ); // Lower than normal
 		 // Calls main() and never returns, hehe - we'll call eglSwapBuffers() from native code
 		nativeInit( Globals.DataDir,
-					Globals.CommandLine,
+					Globals.CommandLine + " -v " + getBestResolution().toString(),
 					( (Globals.SwVideoMode && Globals.MultiThreadedVideo) || Globals.CompatibilityHacksVideo ) ? 1 : 0,
 					Globals.RedirectStdout ? 1 : 0 );
 		System.exit(0); // The main() returns here - I don't bother with deinit stuff, just terminate process
