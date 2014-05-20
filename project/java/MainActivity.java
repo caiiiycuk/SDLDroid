@@ -24,6 +24,7 @@ package net.sourceforge.clonekeenplus;
 import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.MotionEvent;
@@ -51,6 +52,7 @@ import android.view.MenuItem;
 import android.view.Menu;
 import android.view.Gravity;
 import android.text.method.TextKeyListener;
+
 import java.util.LinkedList;
 import java.io.SequenceInputStream;
 import java.io.BufferedInputStream;
@@ -64,17 +66,27 @@ import java.util.zip.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.Set;
+
 import android.text.SpannedString;
+
 import java.io.BufferedReader;
 import java.io.BufferedInputStream;
 import java.io.InputStreamReader;
+
 import android.view.inputmethod.InputMethodManager;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
+
 import java.util.concurrent.Semaphore;
+
+import com.epicport.ResourceDescriptor;
+import com.epicport.ResourceFinder;
+import com.epicport.ResourceProviderConfig;
+import com.epicport.Secret;
+
 import android.content.pm.ActivityInfo;
 import android.view.Display;
 import android.text.InputType;
@@ -82,6 +94,47 @@ import android.util.Log;
 
 public class MainActivity extends Activity
 {
+	private Runnable initializer;
+	public static String DATA_PATH;
+	
+	private ResourceProviderConfig config = new ResourceProviderConfig() {
+		@Override
+		public Uri resourceDownloadPage() {
+			return Uri.parse("http://eepicport.com/ru/private/wargus/?secret="
+					+ Secret.secret());
+		}
+
+		@Override
+		public boolean isAcceptableResource(File zip,
+				ResourceDescriptor resourceDescriptor) {
+			return "wargus".equals(resourceDescriptor.getProject());
+		}
+
+		@SuppressLint("NewApi")
+		public File dataDir() {
+			try {
+				File storage = getExternalFilesDir(null);
+				
+				if (storage == null) {
+					return new File(getApplicationInfo().dataDir);
+				}
+
+				return storage;
+			} catch (Throwable t) {
+				return new File(getApplicationInfo().dataDir);
+			}
+
+		};
+		
+		@Override
+		public void onChoose(File file) {
+			DATA_PATH = file.getAbsolutePath().toString();
+			new Thread(initializer).start();
+		}
+	};
+	
+	private ResourceFinder resourceFinder = new ResourceFinder(this, config);
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -216,7 +269,11 @@ public class MainActivity extends Activity
 				}
 			}
 		};
-		(new Thread(new Callback(this))).start();
+		
+		initializer = new Callback(this);
+//		(new Thread(new Callback(this))).start();
+		resourceFinder.execute();
+		
 		if( Globals.CreateService )
 		{
 			Intent intent = new Intent(this, DummyService.class);

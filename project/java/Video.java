@@ -748,7 +748,7 @@ class DemoRenderer extends GLSurfaceView_SDL.Renderer
 			Thread.currentThread().setPriority( (Thread.NORM_PRIORITY + Thread.MIN_PRIORITY) / 2 ); // Lower than normal
 		 // Calls main() and never returns, hehe - we'll call eglSwapBuffers() from native code
 		nativeInit( Globals.DataDir,
-					Globals.CommandLine + " -v " + getBestResolution().toString(),
+					Globals.CommandLine + " -v " + getBestResolution().toString() + " -d " + MainActivity.DATA_PATH,
 					( (Globals.SwVideoMode && Globals.MultiThreadedVideo) || Globals.CompatibilityHacksVideo ) ? 1 : 0,
 					Globals.RedirectStdout ? 1 : 0 );
 		System.exit(0); // The main() returns here - I don't bother with deinit stuff, just terminate process
