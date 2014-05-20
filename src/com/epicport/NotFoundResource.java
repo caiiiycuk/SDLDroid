@@ -5,7 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 
-import com.example.resourceprovider.R;
+import com.epicport.resourceprovider.R;
 
 public class NotFoundResource {
 

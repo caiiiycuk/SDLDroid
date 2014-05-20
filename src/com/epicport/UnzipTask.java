@@ -11,22 +11,24 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import com.example.resourceprovider.R;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.epicport.resourceprovider.R;
 
 public class UnzipTask extends AsyncTask<String, UnzipProgress, Boolean> {
 	
 	private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
 
 	private final Activity activity;
+	private final Runnable done;
 	private ProgressDialog progressDialog;
 
-	public UnzipTask(Activity activity) {
+	public UnzipTask(Activity activity, Runnable done) {
 		this.activity = activity;
+		this.done = done;
 	}
 
 	@Override
@@ -40,18 +42,21 @@ public class UnzipTask extends AsyncTask<String, UnzipProgress, Boolean> {
 		progressDialog.setMessage(message);
 		progressDialog.setIndeterminate(false);
 		progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+		progressDialog.setCancelable(false);
 		progressDialog.show();
 	}
 
 	@Override
 	protected void onPostExecute(Boolean success) {
 		progressDialog.dismiss();
+		done.run();
 	}
 
 	@Override
 	protected Boolean doInBackground(String... params) {
 		String filePath = params[0];
 		String destinationPath = params[1];
+		String unpackMarker = params[2];
 
 		File archive = new File(filePath);
 		try {
@@ -67,6 +72,9 @@ public class UnzipTask extends AsyncTask<String, UnzipProgress, Boolean> {
 
 				publishProgress(new UnzipProgress(extracted++, total, entry.getName()));
 			}
+			
+			//create unpack marker
+			new File(new File(destinationPath), unpackMarker).createNewFile();
 		} catch (Exception e) {
 			Log.e("UnzipTask", e.getMessage() + " while extracting from "
 					+ filePath + " to " + destinationPath);

@@ -15,9 +15,8 @@ import java.util.zip.ZipFile;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.util.Log;
 
-import com.example.resourceprovider.R;
+import com.epicport.resourceprovider.R;
 
 public class ResourceFinder extends AsyncTask<Void, Integer, Resources> {
 
@@ -39,7 +38,7 @@ public class ResourceFinder extends AsyncTask<Void, Integer, Resources> {
 				R.string.resource_finder_message);
 
 		progressDialog = ProgressDialog.show(activity, title, message, false,
-				true);
+				false);
 	}
 
 	@Override
@@ -107,7 +106,7 @@ public class ResourceFinder extends AsyncTask<Void, Integer, Resources> {
 
 	private static boolean isUnpacked(Resource resource, File applicationDataDir) {
 		File target = new File(applicationDataDir, resource
-				.getResourceDescriptor().getDescriptorInArchive());
+				.getResourceDescriptor().getUnpackMarker());
 		return target.exists();
 	}
 

@@ -26,5 +26,8 @@ public class Resources {
 		return all.get(i);
 	}
 	
-
+	public boolean isUnpacked(Resource resource) {
+		return unpackedResources.contains(resource);
+	}
+	
 }

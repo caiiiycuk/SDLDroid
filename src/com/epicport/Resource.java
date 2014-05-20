@@ -29,6 +29,10 @@ public class Resource {
 	public int hashCode() {
 		return resourceDescriptor.getIdentity().hashCode();
 	}
+	
+	public String getBaseDirectory() {
+		return new File(getResourceDescriptor().getUnpackMarker()).getParent();
+	}
 
 	@Override
 	public boolean equals(Object o) {

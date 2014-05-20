@@ -1,6 +1,7 @@
 package com.epicport;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -14,7 +15,7 @@ public class ResourceDescriptor {
 	private static final String NAME 		= "name";
 	private static final String PROJECT 	= "game";
 	
-	private final String descriptorInArchive;
+	private final String unpackMarker;
 	
 	private final String json;
 	private final String name;
@@ -23,7 +24,7 @@ public class ResourceDescriptor {
 
 	public ResourceDescriptor(String descriptorInArchive, InputStream stream) throws JSONException,
 			IOException {
-		this.descriptorInArchive = descriptorInArchive;
+		this.unpackMarker = new File(new File(descriptorInArchive).getParentFile(), ".unpacked").toString();
 		
 		this.json = toString(stream);
 		
@@ -32,9 +33,9 @@ public class ResourceDescriptor {
 		this.identity = object.getString(IDENTITY);
 		this.project = object.getString(PROJECT);
 	}
-	
-	public String getDescriptorInArchive() {
-		return descriptorInArchive;
+
+	public String getUnpackMarker() {
+		return unpackMarker;
 	}
 	
 	public String getName() {

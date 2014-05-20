@@ -10,5 +10,6 @@
     <string name="resource_choose_title">Choose resource</string>
     <string name="unzip_title">Extracting resources</string>
     <string name="unzip_message">Please wait...</string>
+    <string name="search_more">Search more...</string>
 
 </resources>
