@@ -1,0 +1,14 @@
+<resources>
+
+    <string name="app_name">ResourceProvider</string>
+    <string name="not_found_resource_title">Resource not found</string>
+    <string name="not_found_download">Download</string>
+    <string name="not_found_exit">Exit</string>
+    <string name="not_found_text">This game uses resources from orginal game you should download this resources to continue</string>
+    <string name="resource_finder_title">Searching for resources</string>
+    <string name="resource_finder_message">Please wait...</string>
+    <string name="resource_choose_title">Choose resource</string>
+    <string name="unzip_title">Extracting resources</string>
+    <string name="unzip_message">Please wait...</string>
+
+</resources>
