@@ -14,4 +14,6 @@ public interface ResourceProviderConfig {
 
 	void onChoose(File file);
 
+	void onRestart();
+
 }

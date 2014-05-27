@@ -42,11 +42,13 @@ public class NotFoundResource {
 	}
 
 	private static void accept(Activity activity, ResourceProviderConfig config) {
+		config.onRestart();
 		Intent browserIntent = new Intent(Intent.ACTION_VIEW, config.resourceDownloadPage());
 		activity.startActivity(browserIntent);
 	}
 
 	private static void refuse(Activity activity, ResourceProviderConfig config) {
+		config.onRestart();
 	}
 
 }

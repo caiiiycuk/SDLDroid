@@ -23,11 +23,11 @@ public class ResourceChooser {
 		builder.setTitle(R.string.resource_choose_title);
 		builder.setItems(items, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, final int item) {
-				final Resource resource = resources.get(item);
-				
 				if (item == items.length - 1) {
 					NotFoundResource.show(activity, config);
 				} else {
+					final Resource resource = resources.get(item);
+					
 					Runnable onChoose = new Runnable() {
 						@Override
 						public void run() {
