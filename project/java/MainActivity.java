@@ -112,7 +112,6 @@ public class MainActivity extends Activity
 			return "wargus".equals(resourceDescriptor.getProject());
 		}
 
-		@SuppressLint("NewApi")
 		public File dataDir() {
 			try {
 				File storage = getExternalFilesDir(null);
