@@ -96,11 +96,13 @@ public class MainActivity extends Activity
 {
 	private Runnable initializer;
 	public static String DATA_PATH;
+	private boolean shouldFindResourcesOnResume = false;
 	
 	private ResourceProviderConfig config = new ResourceProviderConfig() {
+		
 		@Override
 		public Uri resourceDownloadPage() {
-			return Uri.parse("http://eepicport.com/ru/private/wargus/?secret="
+			return Uri.parse("http://epicport.com/ru/private/wargus/?secret="
 					+ Secret.secret());
 		}
 
@@ -131,9 +133,12 @@ public class MainActivity extends Activity
 			DATA_PATH = file.getAbsolutePath().toString();
 			new Thread(initializer).start();
 		}
+		
+		@Override
+		public void onRestart() {
+			shouldFindResourcesOnResume = true;
+		}
 	};
-	
-	private ResourceFinder resourceFinder = new ResourceFinder(this, config);
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -272,7 +277,7 @@ public class MainActivity extends Activity
 		
 		initializer = new Callback(this);
 //		(new Thread(new Callback(this))).start();
-		resourceFinder.execute();
+		new ResourceFinder(this, config).execute();
 		
 		if( Globals.CreateService )
 		{
@@ -416,6 +421,10 @@ public class MainActivity extends Activity
 	@Override
 	protected void onResume() {
 		super.onResume();
+		if (shouldFindResourcesOnResume) {
+			shouldFindResourcesOnResume = false;
+			new ResourceFinder(this, config).execute();
+		}
 		if( mGLView != null )
 		{
 			mGLView.onResume();
