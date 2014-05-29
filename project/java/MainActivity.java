@@ -134,7 +134,7 @@ public class MainActivity extends Activity
 		}
 		
 		@Override
-		public void onRestart() {
+		public void reset() {
 			shouldFindResourcesOnResume = true;
 		}
 	};
