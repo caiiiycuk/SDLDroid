@@ -5,6 +5,8 @@ import java.io.File;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.DialogInterface.OnCancelListener;
 
 import com.epicport.resourceprovider.R;
 
@@ -21,6 +23,21 @@ public class ResourceChooser {
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 		builder.setTitle(R.string.resource_choose_title);
+		builder.setCancelable(true);
+		builder.setOnCancelListener(new OnCancelListener() {
+			
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				config.reset();
+				
+				Intent home = new Intent(Intent.ACTION_MAIN);
+				home.addCategory(Intent.CATEGORY_HOME);
+				home.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				activity.startActivity(home);
+		        activity.finish();
+			}
+		});
+		
 		builder.setItems(items, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, final int item) {
 				if (item == items.length - 1) {

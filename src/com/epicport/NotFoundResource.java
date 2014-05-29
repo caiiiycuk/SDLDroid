@@ -42,13 +42,19 @@ public class NotFoundResource {
 	}
 
 	private static void accept(Activity activity, ResourceProviderConfig config) {
-		config.onRestart();
+		config.reset();
 		Intent browserIntent = new Intent(Intent.ACTION_VIEW, config.resourceDownloadPage());
 		activity.startActivity(browserIntent);
 	}
 
 	private static void refuse(Activity activity, ResourceProviderConfig config) {
-		config.onRestart();
+		config.reset();
+		
+		Intent home = new Intent(Intent.ACTION_MAIN);
+		home.addCategory(Intent.CATEGORY_HOME);
+		home.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		activity.startActivity(home);
+        activity.finish();
 	}
 
 }
