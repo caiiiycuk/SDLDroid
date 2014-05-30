@@ -88,6 +88,8 @@ import com.epicport.ResourceProviderConfig;
 import com.epicport.Secret;
 import com.epicport.glue.NativeGlue;
 import com.epicport.glue.billing.BillingThread;
+import com.epicport.glue.billing.SkuProvider;
+import com.epicport.glue.billing.UnitSku;
 import com.epicport.glue.ui.ControlBar;
 
 import android.content.pm.ActivityInfo;
@@ -144,6 +146,18 @@ public class MainActivity extends Activity
 	
 	private final static String APP_KEY = "<enter key here>";
 	private BillingThread billingThread;
+	
+	private SkuProvider skuProvider = new SkuProvider() {
+		
+		@Override
+		public UnitSku[] getUnits() {
+			return new UnitSku[] {
+		        new UnitSku(R.string.sku_inc_gold, 1 /*GOLD*/, 30000, "gold"),
+		        new UnitSku(R.string.sku_inc_oil, 2 /*OIL*/, 30000, "oil"),
+		        new UnitSku(R.string.sku_inc_wood, 3 /*WOOD*/, 30000, "wood"),
+		        new UnitSku(R.string.sku_inc_wood, 4 /*ALL*/, 10000, "wood") };
+		}
+	};
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -417,7 +431,7 @@ public class MainActivity extends Activity
 		DimSystemStatusBar.get().dim(mGLView);
 		
 		billingThread = new BillingThread(this, APP_KEY);
-		ControlBar.createFor(_videoLayout, this, billingThread);		
+		ControlBar.createFor(_videoLayout, this, billingThread, skuProvider);		
 	}
 
 	@Override

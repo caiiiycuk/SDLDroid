@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Commander Genius</string>
+    <string name="app_name">Warcraft 2</string>
 
 
     <string name="init">Initializing</string>
@@ -181,5 +181,10 @@
     <string name="cancel_download_resume">You can resume it later, the data will not be downloaded twice.</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    
+    <string name="sku_inc_gold">+30.000 gold</string>
+    <string name="sku_inc_oil">+30.000 oil</string>
+    <string name="sku_inc_wood">+30.000 wood</string>
+    <string name="sku_inc_resources">+10.000 all</string>
 
 </resources>
