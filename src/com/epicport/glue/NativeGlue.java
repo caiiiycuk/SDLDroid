@@ -2,23 +2,23 @@ package com.epicport.glue;
 
 import android.util.Log;
 
-public class GameMode extends Thread {
+public class NativeGlue extends Thread {
 
-	public static final int GM_UNKNOWN = 0;
+	public static final int GM_UNKNOWN = -1;
 	public static final int GM_IN_GAME = 1;
 
-	private static GameMode instance;
+	private static NativeGlue instance;
 	private static GameModeChangeListener onChangeListener;
 
 	static {
-		instance = new GameMode();
+		instance = new NativeGlue();
 		onChangeListener = null;
 	}
 
 	private boolean alive;
 	private int mode;
 
-	private GameMode() {
+	private NativeGlue() {
 		alive = true;
 		mode = -1;
 
@@ -70,30 +70,8 @@ public class GameMode extends Thread {
 		}
 	}
 
-	private static int gameMode() {
-		return GM_IN_GAME;
-	}
+	private static native int gameMode();
+
+	public static native void buyResource(int resourceId, int count);
 	
-	public static void allocateUnits(int unitType, long[] units) {
-		
-	}
-
-	public static void placeUnits(long[] units) {
-		
-	}
-
-	public static void freeUnits(long[] units) {
-		
-	}
-	
-//	private static native int gameMode();
-//
-//	public static native void allocateUnits(int unitType, long[] units);
-//
-//	public static native void placeUnits(long[] units);
-//
-//	public static native void freeUnits(long[] units);
-//	
-//	public static native void offsetMode(boolean enabled);
-
 }

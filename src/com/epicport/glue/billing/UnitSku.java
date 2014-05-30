@@ -14,4 +14,14 @@ public class UnitSku {
 		this.sku = sku;
 	}
 	
+	@Override
+	public String toString() {
+		return new StringBuilder()
+			.append("name ").append(name).append(" ")
+			.append("id ").append(unitId).append(" ")
+			.append("count ").append(count).append(" ")
+			.append("sku '").append(sku).append("'")
+			.toString();
+	}
+	
 }

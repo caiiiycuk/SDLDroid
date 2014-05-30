@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-import com.epicport.glue.GameMode;
+import com.epicport.glue.NativeGlue;
 import com.epicport.glue.GameModeChangeListener;
 import com.epicport.glue.billing.BillingButton;
 import com.epicport.glue.billing.BillingThread;
@@ -38,7 +38,7 @@ public class ControlBar extends LinearLayout implements GameModeChangeListener {
 		setLayoutParams(layoutParams);
 		addView(billingButton);
 
-		GameMode.setGameModeChangeListener(this);
+		NativeGlue.setGameModeChangeListener(this);
 	}
 
 	public static boolean dispatch(MotionEvent ev) {
@@ -60,7 +60,7 @@ public class ControlBar extends LinearLayout implements GameModeChangeListener {
 		activity.runOnUiThread(new Runnable() {
 		 @Override
 			public void run() {
-				if (gameMode == GameMode.GM_IN_GAME) {
+				if (gameMode == NativeGlue.GM_IN_GAME) {
 					setVisibility(View.VISIBLE);
 				} else {
 					setVisibility(View.GONE);

@@ -7,12 +7,12 @@ import com.epicport.glue.ui.ControlButton;
 
 public class BillingButton extends ControlButton {
 
-	private final ReinforcementClickListener reinforcementClickListener;
+	private final SimpleBuyListener reinforcementClickListener;
 
 	public BillingButton(final Activity activity, final BillingThread billingThread) {
 		super(activity);
 
-		this.reinforcementClickListener = new ReinforcementClickListener(
+		this.reinforcementClickListener = new SimpleBuyListener(
 				activity, billingThread);
 
 		setImageResource(R.drawable.billing);
