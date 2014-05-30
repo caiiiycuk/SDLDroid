@@ -86,6 +86,9 @@ import com.epicport.ResourceDescriptor;
 import com.epicport.ResourceFinder;
 import com.epicport.ResourceProviderConfig;
 import com.epicport.Secret;
+import com.epicport.glue.NativeGlue;
+import com.epicport.glue.billing.BillingThread;
+import com.epicport.glue.ui.ControlBar;
 
 import android.content.pm.ActivityInfo;
 import android.view.Display;
@@ -138,6 +141,20 @@ public class MainActivity extends Activity
 			shouldFindResourcesOnResume = true;
 		}
 	};
+	
+	private final static String APP_KEY = "<enter key here>";
+	private BillingThread billingThread;
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (billingThread != null) {
+			if (!billingThread.onActivityResult(requestCode, requestCode, data)) {
+				super.onActivityResult(requestCode, resultCode, data);
+			}
+		} else {
+			super.onActivityResult(requestCode, resultCode, data);
+		}
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -398,6 +415,9 @@ public class MainActivity extends Activity
 		// Receive keyboard events
 		DimSystemStatusBar.get().dim(_videoLayout);
 		DimSystemStatusBar.get().dim(mGLView);
+		
+		billingThread = new BillingThread(this, APP_KEY);
+		ControlBar.createFor(_videoLayout, this, billingThread);		
 	}
 
 	@Override
@@ -473,6 +493,12 @@ public class MainActivity extends Activity
 	@Override
 	protected void onDestroy()
 	{
+		if (billingThread != null) {
+			billingThread.dispose();
+		}
+
+		NativeGlue.dispose();
+		
 		if( downloader != null )
 		{
 			synchronized( downloader )
@@ -875,6 +901,9 @@ public class MainActivity extends Activity
 			_ad.getView().getBottom() > (int)ev.getY() )
 			return super.dispatchTouchEvent(ev);
 		else
+		if(ControlBar.dispatch(ev))
+			return super.dispatchTouchEvent(ev);
+		else
 		if(mGLView != null)
 			mGLView.onTouchEvent(ev);
 		else
@@ -1220,6 +1249,8 @@ public class MainActivity extends Activity
 				}
 			}
 		}
+		
+		NativeGlue.listen();
 	}
 
 	public int getApplicationVersion()
