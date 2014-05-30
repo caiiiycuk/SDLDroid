@@ -12,24 +12,25 @@ import com.epicport.glue.NativeGlue;
 import com.epicport.glue.GameModeChangeListener;
 import com.epicport.glue.billing.BillingButton;
 import com.epicport.glue.billing.BillingThread;
+import com.epicport.glue.billing.SkuProvider;
 
 public class ControlBar extends LinearLayout implements GameModeChangeListener {
 
 	private static ControlBar instance = null;
 
 	public static void createFor(FrameLayout layout, Activity activity,
-			BillingThread billingThread) {
-		instance = new ControlBar(activity, billingThread);
+			BillingThread billingThread, SkuProvider skuProvider) {
+		instance = new ControlBar(activity, billingThread, skuProvider);
 		layout.addView(instance);
 	}
 
 	private final Activity activity;
 	private final BillingButton billingButton;
 	
-	private ControlBar(Activity activity, BillingThread billingThread) {
+	private ControlBar(Activity activity, BillingThread billingThread, SkuProvider skuProvider) {
 		super(activity);
 		this.activity = activity;
-		this.billingButton = new BillingButton(activity, billingThread);
+		this.billingButton = new BillingButton(activity, billingThread, skuProvider);
 		
 		LayoutParams layoutParams = new LinearLayout.LayoutParams(
 				ViewGroup.LayoutParams.WRAP_CONTENT,

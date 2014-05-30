@@ -3,40 +3,28 @@ package com.epicport.glue.billing;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Toast;
 
 import com.epicport.R;
 import com.epicport.glue.NativeGlue;
 
 public class SimpleBuyListener implements OnClickListener {
 
-	private final static int GOLD = 1;
-	private final static int OIL = 2;
-	private final static int WOOD = 3;
-
 	private final Activity activity;
 	private final BillingThread billingThread;
-
-	private static UnitSku[] getUnits() {
-		return new UnitSku[] {
-				new UnitSku(R.string.rocket_launcher, GOLD, 10000, "gold"),
-				new UnitSku(R.string.siege_tank, OIL, 10000, "oil"),
-				new UnitSku(R.string.sonic_tank, WOOD, 10000, "wood") };
-	}
+	private final SkuProvider skuProvider;
 
 	public SimpleBuyListener(Activity activity,
-			BillingThread billingThread) {
+			BillingThread billingThread, SkuProvider skuProvider) {
 		this.activity = activity;
 		this.billingThread = billingThread;
+		this.skuProvider = skuProvider;
 	}
 
 	@Override
 	public void onClick(View v) {
-		final UnitSku[] unitsSku = getUnits();
+		final UnitSku[] unitsSku = skuProvider.getUnits();
 		final CharSequence[] items = {
 				activity.getResources().getString(unitsSku[0].name),
 				activity.getResources().getString(unitsSku[1].name),
