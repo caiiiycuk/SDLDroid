@@ -4,6 +4,7 @@
     <string name="not_found_download">Download</string>
     <string name="not_found_exit">Exit</string>
     <string name="not_found_text">Game resources not found you should download this resources to continue</string>
+    <string name="not_found_retry">Retry</string>
     <string name="resource_finder_title">Searching for resources</string>
     <string name="resource_finder_message">Please wait...</string>
     <string name="resource_choose_title">Choose resource</string>

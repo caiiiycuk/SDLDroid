@@ -4,6 +4,7 @@
     <string name="not_found_download">Скачать</string>
     <string name="not_found_exit">Выйти</string>
     <string name="not_found_text">Игровые ресурсы не найдены, вы должны скачать эти ресурсы что бы играть</string>
+    <string name="not_found_retry">Обновить</string>
     <string name="resource_finder_title">Поиск ресурсов</string>
     <string name="resource_finder_message">Пожалуйста подождите...</string>
     <string name="resource_choose_title">Выберите ресурс</string>
