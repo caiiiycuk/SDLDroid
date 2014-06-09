@@ -144,7 +144,7 @@ public class MainActivity extends Activity
 		}
 	};
 	
-	private final static String APP_KEY = "<enter key here>";
+	private final static String APP_KEY = BillingThread.TEST_APP_KEY;
 	private BillingThread billingThread;
 	
 	private SkuProvider skuProvider = new SkuProvider() {
@@ -152,10 +152,10 @@ public class MainActivity extends Activity
 		@Override
 		public UnitSku[] getUnits() {
 			return new UnitSku[] {
-		        new UnitSku(R.string.sku_inc_gold, 1 /*GOLD*/, 30000, "gold"),
-		        new UnitSku(R.string.sku_inc_oil, 2 /*OIL*/, 30000, "oil"),
-		        new UnitSku(R.string.sku_inc_wood, 3 /*WOOD*/, 30000, "wood"),
-		        new UnitSku(R.string.sku_inc_wood, 4 /*ALL*/, 10000, "wood") };
+		        new UnitSku(R.string.sku_inc_gold, 1 /*GOLD*/, 5000, "5000gold"),
+		        new UnitSku(R.string.sku_inc_wood, 3 /*WOOD*/, 5000, "5000wood"),
+		        new UnitSku(R.string.sku_inc_oil, 2 /*OIL*/, 5000, "5000oil"),
+		        new UnitSku(R.string.sku_inc_resources, 4 /*ALL*/, 10000, "10000all") };
 		}
 	};
 	

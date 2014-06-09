@@ -149,4 +149,8 @@
 <string name="mouse_hover_jitter_filter">Фильтровать дрожание при поднесении стилуса/пальца к экрану</string>
 <string name="remap_hwkeys_select_simple">Выберите действие</string>
 <string name="remap_hwkeys_select_more_keys">Показать все коды кнопок</string>
+<string name="sku_inc_gold">+5000 Золота</string>
+<string name="sku_inc_oil">+5000 Нефти</string>
+<string name="sku_inc_wood">+5000 Дерева</string>
+<string name="sku_inc_resources">+10000 Ресурсов</string>
 </resources>
