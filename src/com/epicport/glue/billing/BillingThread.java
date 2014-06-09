@@ -12,6 +12,8 @@ import com.epicport.glue.billing.IabHelper.OnIabPurchaseFinishedListener;
 import com.epicport.glue.billing.IabHelper.OnIabSetupFinishedListener;
 
 public class BillingThread extends Thread {
+	
+	public static String TEST_APP_KEY = "@test-app-key";
 
 	private static final int RESPONSE_CODE = 1001;
 
@@ -163,6 +165,11 @@ public class BillingThread extends Thread {
 	}
 	
 	public void purchase(String sku, PurchaseListener purchaseListener) {
+		if (TEST_APP_KEY.equals(appKey)) {
+			purchaseListener.success();
+			return;
+		}
+		
 		if (pendingAsync.get() || skuToBuy != null) {
 			message(R.string.billing_busy);
 			
