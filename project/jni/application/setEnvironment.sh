@@ -49,7 +49,6 @@ MISSING_INCLUDE=
 MISSING_LIB=
 
 CFLAGS="\
--DUSE_TOUCHSCREEN \
 -fpic -ffunction-sections -funwind-tables -fstack-protector \
 -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float \
 -mthumb -O2 -DNDEBUG -DDEBUG \

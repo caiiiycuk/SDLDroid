@@ -418,6 +418,13 @@ static void ProcessMultitouchGesture( int x, int y, int action, int pointerId )
 
 static void SendMultitouchEvents( int x, int y, int action, int pointerId, int force, int radius )
 {
+	SDL_Event event;
+	event.type = SDL_USEREVENT + action;
+	event.user.code = pointerId;
+	event.user.data1 = x;
+	event.user.data2 = y;
+	SDL_PushEvent(&event);
+
 	if( isMultitouchUsed && (action == MOUSE_DOWN || action == MOUSE_UP || action == MOUSE_MOVE) ) // Ignore hover events
 	{
 #if SDL_VERSION_ATLEAST(1,3,0)
