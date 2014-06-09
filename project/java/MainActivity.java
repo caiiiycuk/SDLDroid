@@ -142,6 +142,11 @@ public class MainActivity extends Activity
 		public void reset() {
 			shouldFindResourcesOnResume = true;
 		}
+		
+		@Override
+		public void retry() {
+			new ResourceFinder(MainActivity.this, this).execute();
+		}
 	};
 	
 	private final static String APP_KEY = BillingThread.TEST_APP_KEY;
