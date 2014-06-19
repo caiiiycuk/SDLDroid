@@ -695,11 +695,20 @@ class DemoRenderer extends GLSurfaceView_SDL.Renderer
 		android.graphics.Point displaySize = new android.graphics.Point();
 		
 		android.view.Display display = context.getWindowManager().getDefaultDisplay();
+		DisplayMetrics metrics = context.getResources().getDisplayMetrics();
 		
 		if (android.os.Build.VERSION.SDK_INT >= 13) {
 			display.getSize(displaySize);
 		} else {
 			displaySize.set(display.getWidth(), display.getHeight());
+		}
+		
+		if (metrics.densityDpi > 480 /*DENSITY_XHIGH*/) {
+			displaySize.set((int) Math.round(displaySize.x / 3.0), (int) Math.round(displaySize.y / 3.0));			
+		} else if (metrics.densityDpi >  DisplayMetrics.DENSITY_HIGH) {
+			displaySize.set((int) Math.round(displaySize.x / 2.0), (int) Math.round(displaySize.y / 2.0));
+		} else if (metrics.densityDpi > DisplayMetrics.DENSITY_MEDIUM) {
+			displaySize.set((int) Math.round(displaySize.x / 1.5), (int) Math.round(displaySize.y / 1.5));
 		}
 		
 		ResoultionSize target = new ResoultionSize(displaySize);
