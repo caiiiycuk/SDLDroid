@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.epicport.resourceprovider.R;
 
@@ -24,11 +25,13 @@ public class UnzipTask extends AsyncTask<String, UnzipProgress, Boolean> {
 
 	private final Activity activity;
 	private final Runnable done;
+	private final Runnable fail;
 	private ProgressDialog progressDialog;
 
-	public UnzipTask(Activity activity, Runnable done) {
+	public UnzipTask(Activity activity, Runnable done, Runnable fail) {
 		this.activity = activity;
 		this.done = done;
+		this.fail = fail;
 	}
 
 	@Override
@@ -49,7 +52,14 @@ public class UnzipTask extends AsyncTask<String, UnzipProgress, Boolean> {
 	@Override
 	protected void onPostExecute(Boolean success) {
 		progressDialog.dismiss();
-		done.run();
+		
+		if (success) {
+			done.run();
+		} else {
+			Toast.makeText(activity, 
+				"Error while extracting ezip file, please check free space...", Toast.LENGTH_LONG).show();
+			fail.run();
+		}
 	}
 
 	@Override

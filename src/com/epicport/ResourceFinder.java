@@ -16,6 +16,7 @@ import java.util.zip.ZipFile;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.epicport.resourceprovider.R;
 
@@ -162,6 +163,10 @@ public class ResourceFinder extends AsyncTask<Void, Integer, Resources> {
 	private static boolean isUnpacked(Resource resource, File applicationDataDir) {
 		File target = new File(applicationDataDir, resource
 				.getResourceDescriptor().getUnpackMarker());
+		
+		Log.d("epicport-ResourceChooser", "Checking resource " + resource.getZipFile() + " identity " + resource.getResourceDescriptor().getIdentity() 
+				+ " against unpacked version, marker " + target.getAbsolutePath().toString() + " exists? " + target.exists());
+		
 		return target.exists();
 	}
 
@@ -184,6 +189,7 @@ public class ResourceFinder extends AsyncTask<Void, Integer, Resources> {
 							return new Resource(zip, resourceDescriptor);
 						}
 					} catch (Exception e) {
+						Log.e("epicport-ResourceProvider", "Rejected resource from " + zip.getAbsoluteFile().toString() + ", cause: " + e.getMessage());
 						stream.close();
 					}
 				}

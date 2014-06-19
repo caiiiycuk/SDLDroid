@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
+import android.util.Log;
 
 import com.epicport.resourceprovider.R;
 
@@ -24,10 +25,11 @@ public class ResourceChooser {
 		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 		builder.setTitle(R.string.resource_choose_title);
 		builder.setCancelable(true);
-		builder.setOnCancelListener(new OnCancelListener() {
+		
+		final Runnable onFail = new Runnable() {
 			
 			@Override
-			public void onCancel(DialogInterface dialog) {
+			public void run() {
 				config.reset();
 				
 				Intent home = new Intent(Intent.ACTION_MAIN);
@@ -35,6 +37,14 @@ public class ResourceChooser {
 				home.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				activity.startActivity(home);
 		        activity.finish();
+			}
+		};
+		
+		builder.setOnCancelListener(new OnCancelListener() {
+			
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				onFail.run();
 			}
 		});
 		
@@ -58,12 +68,14 @@ public class ResourceChooser {
 					};
 					
 					if (!resources.isUnpacked(resource)) {
-						UnzipTask unzipTask = new UnzipTask(activity, onChoose);
+						Log.i("epicport-ResourceChooser", "Unpacking resource  " + resource.getZipFile());
+						UnzipTask unzipTask = new UnzipTask(activity, onChoose, onChoose);
 						unzipTask.execute(
 							resource.getZipFile().getAbsoluteFile().toString(),
 							config.dataDir().getAbsoluteFile().toString(),
 							resource.getResourceDescriptor().getUnpackMarker());
 					} else {
+						Log.i("epicport-ResourceChooser", "Chosed unpacked resource  at " + resource.getBaseDirectory());
 						onChoose.run();
 					}
 				}
