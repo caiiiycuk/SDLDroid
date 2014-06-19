@@ -11,23 +11,28 @@ import org.json.JSONObject;
 
 public class ResourceDescriptor {
 
-	private static final String IDENTITY 	= "identity";
-	private static final String NAME 		= "name";
-	private static final String PROJECT 	= "game";
-	
+	private static final String IDENTITY = "identity";
+	private static final String NAME = "name";
+	private static final String PROJECT = "game";
+
 	private final String unpackMarker;
-	
+
 	private final String json;
 	private final String name;
 	private final String identity;
 	private final String project;
 
-	public ResourceDescriptor(String descriptorInArchive, InputStream stream) throws JSONException,
-			IOException {
-		this.unpackMarker = new File(new File(descriptorInArchive).getParentFile(), ".unpacked").toString();
-		
+	public ResourceDescriptor(String descriptorInArchive, InputStream stream)
+			throws JSONException, IOException {
+		this(new File(new File(descriptorInArchive).getParentFile(), ".unpacked"), stream);
+	}
+
+	public ResourceDescriptor(File unpackMarker, InputStream stream)
+			throws JSONException, IOException {
+		this.unpackMarker = unpackMarker.toString();
+
 		this.json = toString(stream);
-		
+
 		JSONObject object = new JSONObject(json);
 		this.name = object.getString(NAME);
 		this.identity = object.getString(IDENTITY);
@@ -37,15 +42,15 @@ public class ResourceDescriptor {
 	public String getUnpackMarker() {
 		return unpackMarker;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public String getIdentity() {
 		return identity;
 	}
-	
+
 	public String getProject() {
 		return project;
 	}
@@ -62,7 +67,7 @@ public class ResourceDescriptor {
 
 		return contents.toString();
 	}
-	
+
 	@Override
 	public String toString() {
 		return json;

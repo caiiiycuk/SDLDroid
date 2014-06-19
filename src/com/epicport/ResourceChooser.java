@@ -48,7 +48,12 @@ public class ResourceChooser {
 					Runnable onChoose = new Runnable() {
 						@Override
 						public void run() {
-							config.onChoose(new File(config.dataDir(), resource.getBaseDirectory()));
+							File baseDirectory = new File(resource.getBaseDirectory());
+							if (baseDirectory.isAbsolute()) {
+								config.onChoose(baseDirectory);
+							} else {
+								config.onChoose(new File(config.dataDir(), resource.getBaseDirectory()));
+							}
 						};
 					};
 					

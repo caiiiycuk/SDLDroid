@@ -1,6 +1,7 @@
 package com.epicport;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -83,7 +84,61 @@ public class ResourceFinder extends AsyncTask<Void, Integer, Resources> {
 			}
 		}
 
-		return categorize(resources, activity, config);
+		if (resources.size() == 0) {
+			return fallbackSearchInAppFolder();
+		} else {
+			return categorize(resources, activity, config);
+		}
+	}
+
+	private Resources fallbackSearchInAppFolder() {
+		Set<Resource> unpackedResources = new HashSet<Resource>();
+
+		File appDir = config.dataDir();
+		List<File> candidates = new ArrayList<File>();
+
+		addFile(DESCRIPTOR_FILE, appDir, candidates);
+
+		File[] subdirs = appDir.listFiles();
+		if (subdirs != null) {
+			for (File subdir : subdirs) {
+				if (subdir.isDirectory() && !subdir.getName().startsWith(".")) {
+					addFile(DESCRIPTOR_FILE, subdir, candidates);
+				}
+			}
+		}
+
+		for (File file : candidates) {
+			try {
+				FileInputStream stream = new FileInputStream(file);
+				try {
+					ResourceDescriptor resourceDescriptor = new ResourceDescriptor(
+							file, stream);
+					if (config.isAcceptableResource(null, resourceDescriptor)) {
+						unpackedResources.add(new Resource(null,
+								resourceDescriptor));
+					}
+				} catch (Exception e) {
+					stream.close();
+				}
+			} catch (IOException e) {
+				// ignore
+			}
+		}
+
+		return new Resources(unpackedResources, new HashSet<Resource>());
+	}
+
+	private void addFile(String name, File root, List<File> container) {
+		File[] listFiles = root.listFiles();
+		if (listFiles != null) {
+			for (File candidate : listFiles) {
+				if (name.equals(candidate.getName())) {
+					container.add(candidate);
+					return;
+				}
+			}
+		}
 	}
 
 	private static Resources categorize(List<Resource> resources,
@@ -183,7 +238,6 @@ public class ResourceFinder extends AsyncTask<Void, Integer, Resources> {
 				lookupPath(file, zipFiles, maxNesting - 1);
 			}
 		}
-
 	}
 
 	private static boolean isHighPriorityPath(String fileName) {
