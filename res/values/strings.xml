@@ -1,7 +1,7 @@
 <resources>
 
     <string name="not_found_resource_title">Resource not found</string>
-    <string name="not_found_download">Download</string>
+    <string name="not_found_download">Information</string>
     <string name="not_found_exit">Exit</string>
     <string name="not_found_text">Game resources not found you should download this resources to continue</string>
     <string name="not_found_retry">Retry</string>
@@ -10,6 +10,6 @@
     <string name="resource_choose_title">Choose resource</string>
     <string name="unzip_title">Extracting resources</string>
     <string name="unzip_message">Please wait...</string>
-    <string name="search_more">Download...</string>
+    <string name="search_more">More...</string>
 
 </resources>
