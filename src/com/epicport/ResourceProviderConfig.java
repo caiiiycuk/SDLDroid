@@ -2,11 +2,7 @@ package com.epicport;
 
 import java.io.File;
 
-import android.net.Uri;
-
 public interface ResourceProviderConfig {
-
-	Uri resourceDownloadPage();
 
 	boolean isAcceptableResource(File zip, ResourceDescriptor resourceDescriptor);
 	
@@ -18,4 +14,8 @@ public interface ResourceProviderConfig {
 
 	void retry();
 
+	String getSelectFileDescription();
+
+	void reset(File file);
+	
 }

@@ -4,6 +4,8 @@ import java.io.File;
 
 public class Resource {
 
+	public static final String DESCRIPTOR_FILE = "e.json";
+	
 	private final File zipFile;
 	private final ResourceDescriptor resourceDescriptor;
 

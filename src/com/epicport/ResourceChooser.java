@@ -5,8 +5,8 @@ import java.io.File;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.Intent;
 import android.util.Log;
 
 import com.epicport.resourceprovider.R;
@@ -20,7 +20,7 @@ public class ResourceChooser {
 			items[i] = resources.get(i).getResourceDescriptor().getName();
 		}
 		
-		items[items.length - 1] = activity.getString(R.string.search_more);
+		items[items.length - 1] = activity.getString(R.string.select_resource);
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 		builder.setTitle(R.string.resource_choose_title);

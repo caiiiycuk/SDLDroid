@@ -3,15 +3,11 @@ package com.epicport;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Enumeration;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -22,7 +18,6 @@ import com.epicport.resourceprovider.R;
 
 public class ResourceFinder extends AsyncTask<Void, Integer, Resources> {
 
-	private static final String DESCRIPTOR_FILE = "e.json";
 	private ProgressDialog progressDialog;
 	private Activity activity;
 	private ResourceProviderConfig config;
@@ -78,33 +73,30 @@ public class ResourceFinder extends AsyncTask<Void, Integer, Resources> {
 				break;
 			}
 
-			Resource resource = makeResource(zip);
+			Resource resource = ResourceFactory.makeEzipResource(zip, config);
 
 			if (resource != null) {
 				resources.add(resource);
 			}
 		}
 
-		if (resources.size() == 0) {
-			return fallbackSearchInAppFolder();
-		} else {
-			return categorize(resources, activity, config);
-		}
+		Set<Resource> inAppResources = fallbackSearchInAppFolder();
+		return categorize(resources, inAppResources, activity, config);
 	}
 
-	private Resources fallbackSearchInAppFolder() {
+	private Set<Resource> fallbackSearchInAppFolder() {
 		Set<Resource> unpackedResources = new HashSet<Resource>();
 
 		File appDir = config.dataDir();
 		List<File> candidates = new ArrayList<File>();
 
-		addFile(DESCRIPTOR_FILE, appDir, candidates);
+		addFile(Resource.DESCRIPTOR_FILE, appDir, candidates);
 
 		File[] subdirs = appDir.listFiles();
 		if (subdirs != null) {
 			for (File subdir : subdirs) {
 				if (subdir.isDirectory() && !subdir.getName().startsWith(".")) {
-					addFile(DESCRIPTOR_FILE, subdir, candidates);
+					addFile(Resource.DESCRIPTOR_FILE, subdir, candidates);
 				}
 			}
 		}
@@ -127,7 +119,7 @@ public class ResourceFinder extends AsyncTask<Void, Integer, Resources> {
 			}
 		}
 
-		return new Resources(unpackedResources, new HashSet<Resource>());
+		return unpackedResources;
 	}
 
 	private void addFile(String name, File root, List<File> container) {
@@ -142,7 +134,7 @@ public class ResourceFinder extends AsyncTask<Void, Integer, Resources> {
 		}
 	}
 
-	private static Resources categorize(List<Resource> resources,
+	private static Resources categorize(Collection<Resource> resources, Collection<Resource> inAppResources,
 			Activity activity, ResourceProviderConfig config) {
 		Set<Resource> unpacked = new HashSet<Resource>(resources.size());
 		Set<Resource> packed = new HashSet<Resource>(resources.size());
@@ -150,66 +142,29 @@ public class ResourceFinder extends AsyncTask<Void, Integer, Resources> {
 		File applicationDataDir = config.dataDir();
 
 		for (Resource resource : resources) {
-			if (isUnpacked(resource, applicationDataDir)) {
+			if (inAppResources.contains(resource) || isUnpacked(resource, applicationDataDir)) {
 				unpacked.add(resource);
 			} else {
 				packed.add(resource);
 			}
 		}
 
+		unpacked.addAll(inAppResources);
 		return new Resources(unpacked, packed);
 	}
 
 	private static boolean isUnpacked(Resource resource, File applicationDataDir) {
 		File target = new File(applicationDataDir, resource
 				.getResourceDescriptor().getUnpackMarker());
-		
-		Log.d("epicport-ResourceChooser", "Checking resource " + resource.getZipFile() + " identity " + resource.getResourceDescriptor().getIdentity() 
-				+ " against unpacked version, marker " + target.getAbsolutePath().toString() + " exists? " + target.exists());
-		
+
+		Log.d("epicport-ResourceChooser",
+				"Checking resource " + resource.getZipFile() + " identity "
+						+ resource.getResourceDescriptor().getIdentity()
+						+ " against unpacked version, marker "
+						+ target.getAbsolutePath().toString() + " exists? "
+						+ target.exists());
+
 		return target.exists();
-	}
-
-	private Resource makeResource(File zip) {
-		ZipFile zipFile = null;
-
-		try {
-			zipFile = new ZipFile(zip);
-			Enumeration<? extends ZipEntry> entries = zipFile.entries();
-
-			while (entries.hasMoreElements()) {
-				ZipEntry element = entries.nextElement();
-				if (element.getName().endsWith(DESCRIPTOR_FILE)) {
-					InputStream stream = zipFile.getInputStream(element);
-					try {
-						ResourceDescriptor resourceDescriptor = new ResourceDescriptor(
-								element.getName(), stream);
-						if (config
-								.isAcceptableResource(zip, resourceDescriptor)) {
-							return new Resource(zip, resourceDescriptor);
-						}
-					} catch (Exception e) {
-						Log.e("epicport-ResourceProvider", "Rejected resource from " + zip.getAbsoluteFile().toString() + ", cause: " + e.getMessage());
-						stream.close();
-					}
-				}
-			}
-
-		} catch (ZipException e) {
-			// do nothing
-		} catch (IOException e) {
-			// do nothing
-		} finally {
-			if (zipFile != null) {
-				try {
-					zipFile.close();
-				} catch (IOException e) {
-					// do nothing
-				}
-			}
-		}
-
-		return null;
 	}
 
 	private static void lookupPath(File root, List<File> zipFiles,

@@ -1,15 +1,16 @@
 <resources>
 
     <string name="not_found_resource_title">Ресурсы не найдены</string>
-    <string name="not_found_download">Инструкция</string>
+    <string name="not_found_continue">Продолжить</string>
     <string name="not_found_exit">Выйти</string>
-    <string name="not_found_text">Игровые ресурсы не найдены, вы должны скачать эти ресурсы что бы играть</string>
-    <string name="not_found_retry">Обновить</string>
+    <string name="not_found_cancle">Отмена</string>
     <string name="resource_finder_title">Поиск ресурсов</string>
-    <string name="resource_finder_message">Пожалуйста подождите...</string>
+    <string name="resource_finder_message">Пожалуйста подождите&#8230;</string>
     <string name="resource_choose_title">Выберите ресурс</string>
     <string name="unzip_title">Извелечение ресурсов</string>
-    <string name="unzip_message">Подождите пожалуйтса...</string>
-    <string name="search_more">Еще...</string>
+    <string name="unzip_message">Подождите пожалуйтса&#8230;</string>
+    <string name="select_resource">Выбрать файл&#8230;</string>
+    <string name="wrong_resource">Извините, вы выбрали неподходящий файл</string>
+    <string name="checking_resource">Пожалуйста подождите, чтение файла</string>
 
 </resources>
