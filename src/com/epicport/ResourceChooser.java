@@ -1,23 +1,23 @@
 package com.epicport;
 
 import java.io.File;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
-import android.util.Log;
 
 import com.epicport.resourceprovider.R;
 
 public class ResourceChooser {
 
-	public static void show(final Activity activity, final Resources resources, final ResourceProviderConfig config) {
+	public static void show(final Activity activity, final List<Resource> resources, final ResourceProviderConfig config) {
 		final CharSequence[] items = new CharSequence[resources.size() + 1];
 		
 		for (int i=0; i<resources.size(); ++i) {
-			items[i] = resources.get(i).getResourceDescriptor().getName();
+			items[i] = resources.get(i).getName();
 		}
 		
 		items[items.length - 1] = activity.getString(R.string.select_resource);
@@ -26,7 +26,7 @@ public class ResourceChooser {
 		builder.setTitle(R.string.resource_choose_title);
 		builder.setCancelable(true);
 		
-		final Runnable onFail = new Runnable() {
+		final Runnable onCancle = new Runnable() {
 			
 			@Override
 			public void run() {
@@ -44,7 +44,7 @@ public class ResourceChooser {
 			
 			@Override
 			public void onCancel(DialogInterface dialog) {
-				onFail.run();
+				onCancle.run();
 			}
 		});
 		
@@ -67,17 +67,16 @@ public class ResourceChooser {
 						};
 					};
 					
-					if (!resources.isUnpacked(resource)) {
-						Log.i("epicport-ResourceChooser", "Unpacking resource  " + resource.getZipFile());
-						UnzipTask unzipTask = new UnzipTask(activity, onChoose, onChoose);
-						unzipTask.execute(
-							resource.getZipFile().getAbsoluteFile().toString(),
-							config.dataDir().getAbsoluteFile().toString(),
-							resource.getResourceDescriptor().getUnpackMarker());
-					} else {
-						Log.i("epicport-ResourceChooser", "Chosed unpacked resource  at " + resource.getBaseDirectory());
-						onChoose.run();
-					}
+					Runnable onError = new Runnable() {
+
+						@Override
+						public void run() {
+							config.reset();
+							new ResourceFinder(activity, config).execute();
+						}
+					};
+					
+					new ResourcePrepareTask(activity, onChoose, onError, config).execute(resource);
 				}
 			}
 		});

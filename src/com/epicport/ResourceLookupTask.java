@@ -10,14 +10,14 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-public class ResourceExtractTask extends AsyncTask<File, Void, Resource> {
+public class ResourceLookupTask extends AsyncTask<File, Void, Resource> {
 	
 	private final Activity activity;
 	private final ResourceProviderConfig config;
 	private Resource resource;
 	private ProgressDialog progressDialog;
 	
-	public ResourceExtractTask(Activity activity, final ResourceProviderConfig config) {
+	public ResourceLookupTask(Activity activity, final ResourceProviderConfig config) {
 		this.activity = activity;
 		this.config = config;
 	}
@@ -47,12 +47,7 @@ public class ResourceExtractTask extends AsyncTask<File, Void, Resource> {
 		this.resource = resource;
 		
 		if (resource != null) {
-			Log.i("epicport-ResourceChooser", "Unpacking resource  " + resource.getZipFile());
-			UnzipTask unzipTask = new UnzipTask(activity, onSuccess, onFail);
-			unzipTask.execute(
-				resource.getZipFile().getAbsoluteFile().toString(),
-				config.dataDir().getAbsoluteFile().toString(),
-				resource.getResourceDescriptor().getUnpackMarker());
+			new ResourcePrepareTask(activity, onSuccess, onFail, config).execute(resource);
 		} else {
 			Toast.makeText(activity, activity.getString(R.string.wrong_resource), Toast.LENGTH_LONG).show();
 			onFail.run();
@@ -63,11 +58,21 @@ public class ResourceExtractTask extends AsyncTask<File, Void, Resource> {
 	protected Resource doInBackground(File... params) {
 		File resourceFile = params[0];
 		
+		Log.d("epicport-ResourceProvider", "Trying to unpack file " + resourceFile.getAbsoluteFile());
+		
 		Resource ezipResource = ResourceFactory.makeEzipResource(resourceFile, config);
 		
-		if (ezipResource != null &&  config.isAcceptableResource(resourceFile, ezipResource.getResourceDescriptor())) {
+		if (ezipResource != null) {
 			return ezipResource;
 		}
+//		
+//		Resource isoResource = ResourceFactory.makeIsoResource(resourceFile, config);
+//		
+//		if (isoResource != null) {
+//			return isoResource;
+//		}
+		
+		
 		
 		return null;
 	}

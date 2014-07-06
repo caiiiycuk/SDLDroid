@@ -1,76 +1,34 @@
 package com.epicport;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-public class ResourceDescriptor {
-
-	private static final String IDENTITY = "identity";
-	private static final String NAME = "name";
-	private static final String PROJECT = "game";
-
-	private final String unpackMarker;
-
-	private final String json;
-	private final String name;
-	private final String identity;
-	private final String project;
-
-	public ResourceDescriptor(String descriptorInArchive, InputStream stream)
-			throws JSONException, IOException {
-		this(new File(new File(descriptorInArchive).getParentFile(), ".unpacked"), stream);
+public abstract class ResourceDescriptor {
+	
+	private final int resourceType;
+	
+	public ResourceDescriptor(int resourceType) {
+		this.resourceType = resourceType;
 	}
-
-	public ResourceDescriptor(File unpackMarker, InputStream stream)
-			throws JSONException, IOException {
-		this.unpackMarker = unpackMarker.toString();
-
-		this.json = toString(stream);
-
-		JSONObject object = new JSONObject(json);
-		this.name = object.getString(NAME);
-		this.identity = object.getString(IDENTITY);
-		this.project = object.getString(PROJECT);
-	}
-
-	public String getUnpackMarker() {
-		return unpackMarker;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getIdentity() {
-		return identity;
-	}
-
-	public String getProject() {
-		return project;
-	}
-
-	private static String toString(InputStream stream) throws IOException {
-		BufferedReader reader = new BufferedReader(
-				new InputStreamReader(stream));
-		StringBuilder contents = new StringBuilder();
-
-		String line;
-		while ((line = reader.readLine()) != null) {
-			contents.append(line);
-		}
-
-		return contents.toString();
+	
+	public abstract String getIdentity();
+	
+	public abstract String getName();
+	
+	public abstract String getRootDirectoryName();
+	
+	@Override
+	public int hashCode() {
+		return getIdentity().hashCode();
 	}
 
 	@Override
-	public String toString() {
-		return json;
+	public boolean equals(Object o) {
+		if (o instanceof ResourceDescriptor) {
+			return getIdentity().equals(((ResourceDescriptor) o).getIdentity());
+		}
+		return super.equals(o);
 	}
-
+	
+	public int getResourceType() {
+		return resourceType;
+	}
+	
 }

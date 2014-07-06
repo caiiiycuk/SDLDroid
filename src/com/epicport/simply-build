@@ -1,0 +1,1 @@
+cmake -DEMSCRIPTEN=1 -DCMAKE_TOOLCHAIN_FILE=/emscripten/cmake/Platform/Emscripten.cmake -DCMAKE_MODULE_PATH=/emscripten/cmake -DCMAKE_BUILD_TYPE=Release -G "Unix Makefiles" .

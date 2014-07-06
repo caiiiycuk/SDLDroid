@@ -19,10 +19,8 @@ import android.widget.Toast;
 
 import com.epicport.resourceprovider.R;
 
-public class UnzipTask extends AsyncTask<String, UnzipProgress, Boolean> {
+public class UnzipTask extends AsyncTask<String, ExtractProgress, Boolean> {
 	
-	private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
-
 	private final Activity activity;
 	private final Runnable done;
 	private final Runnable fail;
@@ -66,7 +64,8 @@ public class UnzipTask extends AsyncTask<String, UnzipProgress, Boolean> {
 	protected Boolean doInBackground(String... params) {
 		String filePath = params[0];
 		String destinationPath = params[1];
-		String unpackMarker = params[2];
+		
+		Log.i("epicport-ResourceProvider", "Start unzip task from " + filePath + " to " + destinationPath);
 
 		File archive = new File(filePath);
 		try {
@@ -78,13 +77,10 @@ public class UnzipTask extends AsyncTask<String, UnzipProgress, Boolean> {
 			Enumeration<? extends ZipEntry> entries = zipFile.entries();
 			while (entries.hasMoreElements()) {
 				ZipEntry entry = entries.nextElement();
-				unzipEntry(zipFile, entry, destinationPath);
+				IOUtils.unzipEntry(zipFile, entry, destinationPath);
 
-				publishProgress(new UnzipProgress(extracted++, total, entry.getName()));
+				publishProgress(new ExtractProgress(extracted++, total, entry.getName()));
 			}
-			
-			//create unpack marker
-			new File(new File(destinationPath), unpackMarker).createNewFile();
 		} catch (Exception e) {
 			Log.e("UnzipTask", e.getMessage() + " while extracting from "
 					+ filePath + " to " + destinationPath);
@@ -95,7 +91,7 @@ public class UnzipTask extends AsyncTask<String, UnzipProgress, Boolean> {
 	}
 
 	@Override
-	protected void onProgressUpdate(UnzipProgress... values) {
+	protected void onProgressUpdate(ExtractProgress... values) {
 		if (values.length > 0) {
 			progressDialog.setProgress(values[0].extracted);
 			progressDialog.setMax(values[0].total);
@@ -103,51 +99,4 @@ public class UnzipTask extends AsyncTask<String, UnzipProgress, Boolean> {
 		}
 	}
 
-	private void unzipEntry(ZipFile zipfile, ZipEntry entry, String outputDir)
-			throws IOException {
-		if (entry.isDirectory()) {
-			createDir(new File(outputDir, entry.getName()));
-			return;
-		}
-
-		File outputFile = new File(outputDir, entry.getName());
-		if (!outputFile.getParentFile().exists()) {
-			createDir(outputFile.getParentFile());
-		}
-
-		BufferedInputStream inputStream = new BufferedInputStream(
-				zipfile.getInputStream(entry));
-		BufferedOutputStream outputStream = new BufferedOutputStream(
-				new FileOutputStream(outputFile));
-
-		try {
-			copy(inputStream, outputStream);
-		} finally {
-			outputStream.close();
-			inputStream.close();
-		}
-	}
-
-	private void createDir(File dir) {
-		if (dir.exists()) {
-			return;
-		}
-
-		if (!dir.mkdirs()) {
-			throw new RuntimeException("Can not create dir " + dir);
-		}
-	}
-
-	public static long copy(InputStream input, OutputStream output)
-			throws IOException {
-		byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
-		long count = 0;
-		int n = 0;
-		while (-1 != (n = input.read(buffer))) {
-			output.write(buffer, 0, n);
-			count += n;
-		}
-
-		return count;
-	}
 }
