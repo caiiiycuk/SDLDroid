@@ -3,9 +3,10 @@ package com.epicport;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import net.didion.loopy.FileEntry;
 import net.didion.loopy.iso9660.ISO9660FileSystem;
@@ -76,7 +77,50 @@ public class ResourcePrepareTask extends AsyncTask<Resource, ExtractProgress, Ru
 	private Runnable packedExtract(Resource resource) {
 		FileWithIdentity fileWithIdentity = new FileWithIdentity();
 		
-		switch (resource.getResourceDescriptor().getResourceType()) {
+		switch (resource.getType()) {
+		case Resource.RESOURCE_ZIP_ARCHIVE: {
+			ArchiveResource archive = (ArchiveResource) resource;
+			
+			try {
+				config.archiveOpen(archive, new File(config.dataDir(),
+						archive.getBaseDirectory()).getAbsoluteFile(), this);
+				
+				ZipFile zipFile = new ZipFile(archive.getArchiveFile());
+				Enumeration<? extends ZipEntry> entries = zipFile.entries();
+								
+				
+				while (entries.hasMoreElements()) {
+					ZipEntry fileEntry = entries.nextElement();
+					fileWithIdentity.reset(fileEntry.getName(), fileEntry.getSize());
+					config.archiveAddEntry(fileWithIdentity, fileEntry);
+				}
+				
+				List<ZipEntry> unpackEntries =  (List<ZipEntry>) config.archiveEntriesForUnpack();
+				
+				for (ZipEntry fileEntry: unpackEntries) {
+					fileWithIdentity.reset(fileEntry.getName(), fileEntry.getSize());
+					
+					InputStream inputStream = zipFile.getInputStream(fileEntry);
+					File resourceFile = IOUtils.createTempFile("iso_", ".tmp", activity);
+					FileOutputStream fileOutputStream = new FileOutputStream(resourceFile); 
+					
+					IOUtils.copy(inputStream, fileOutputStream);
+					
+					config.archiveUnpack(resourceFile, fileWithIdentity);
+					
+					inputStream.close();
+					fileOutputStream.close();
+					resourceFile.delete();
+				}
+				
+				config.archiveClose();
+				return done;
+			} catch (Exception e) {
+				Log.e("epicport-ResourceProvider", "RESOURCE_ZIP_FILE extraction error " + e.getMessage(), e);
+			}
+			break;
+		}
+		
 		case Resource.RESOURCE_ISO_FILE:
 			ArchiveResource archive = (ArchiveResource) resource;
 			
@@ -113,11 +157,11 @@ public class ResourcePrepareTask extends AsyncTask<Resource, ExtractProgress, Ru
 				}
 				
 				config.archiveClose();
-				
+				return done;
 			} catch (Exception e) {
 				Log.e("epicport-ResourceProvider", "RESOURCE_ISO_FILE extraction error " + e.getMessage(), e);
-				return fail;
 			}
+			break;
 		}
 
 		return fail;

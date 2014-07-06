@@ -12,5 +12,8 @@
     <string name="select_resource">Выбрать файл&#8230;</string>
     <string name="wrong_resource">Извините, вы выбрали неподходящий файл</string>
     <string name="checking_resource">Пожалуйста подождите, чтение файла</string>
+    <string name="scanning_fs">Поиск файлов,&#160;</string>
+    <string name="scanning_file">Чтение файла,&#160;</string>
+    <string name="scanning_extracted">Поиск готовых ресурсов&#8230;</string>
 
 </resources>

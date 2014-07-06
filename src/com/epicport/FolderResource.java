@@ -28,7 +28,7 @@ public class FolderResource extends Resource {
 			return "[directory] " + getResourceDescriptor().getName();
 		}
 		
-		return "[extracted] " + getResourceDescriptor().getName();
+		return "[extracted] " + folder.getName();
 	}
 	
 }

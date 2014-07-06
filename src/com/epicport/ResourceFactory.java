@@ -17,7 +17,8 @@ import android.util.Log;
 
 public class ResourceFactory {
 	
-	public static Resource makeEzipResource(File zip, ResourceProviderConfig config) {
+	public static void makeEzipResource(File zip, ResourceProviderConfig config, 
+			Collection<Resource> container) {
 		ZipFile zipFile = null;
 
 		try {
@@ -32,7 +33,7 @@ public class ResourceFactory {
 						EzipResourceDescriptor resourceDescriptor = new EzipResourceDescriptor(
 								new File(element.getName()).getParent(), stream, Resource.TYPE_RESOURCE);
 						if (config.isAcceptableResource(resourceDescriptor)) {
-							return new ArchiveResource(Resource.RESOURCE_ZIP_ARCHIVE, zip, resourceDescriptor);
+							container.add(new ArchiveResource(Resource.RESOURCE_ZIP_ARCHIVE, zip, resourceDescriptor));
 						}
 					} catch (Exception e) {
 						Log.e("epicport-ResourceProvider",
@@ -57,13 +58,10 @@ public class ResourceFactory {
 				}
 			}
 		}
-
-		return null;
 	}
 
-	public static Collection<Resource> makeIsoResource(File resourceFile,
-			ResourceProviderConfig config) {
-		List<Resource> resources = new ArrayList<Resource>();
+	public static void makeIsoResource(File resourceFile,
+			ResourceProviderConfig config, Collection<Resource> container) {
 		FileWithIdentity fileWithIdentity = new FileWithIdentity();
 		
 		try {
@@ -74,14 +72,59 @@ public class ResourceFactory {
 				fileWithIdentity.reset(file.getPath(), file.getSize());
 				int resourceType = config.getResourceType(fileWithIdentity);
 				if (resourceType != Resource.TYPE_NOT_A_RESOURCE) {
-					resources.add(new ArchiveResource(Resource.RESOURCE_ISO_FILE, resourceFile, 
+					container.add(new ArchiveResource(Resource.RESOURCE_ISO_FILE, resourceFile, 
 							new FileResourceDescriptor(fileWithIdentity, resourceType)));
 				} 
 			}
 		} catch (Throwable e) {
 			Log.d("epicport-ResourceProvider", "Not iso resource " + e.getMessage());
 		}
-		
-		return resources;
 	}
+	
+	private static void makeZipResource(File resourceFile,
+			ResourceProviderConfig config, List<Resource> container) {
+		FileWithIdentity fileWithIdentity = new FileWithIdentity();
+		
+		ZipFile zipFile = null;
+		try {
+			zipFile = new ZipFile(resourceFile);
+			Enumeration<? extends ZipEntry> entries = zipFile.entries();
+
+			while (entries.hasMoreElements()) {
+				ZipEntry element = entries.nextElement();
+				fileWithIdentity.reset(element.getName(), element.getSize());
+				int resourceType = config.getResourceType(fileWithIdentity);
+				if (resourceType != Resource.TYPE_NOT_A_RESOURCE) {
+					container.add(new ArchiveResource(Resource.RESOURCE_ZIP_ARCHIVE, resourceFile, 
+							new FileResourceDescriptor(fileWithIdentity, resourceType)));
+				} 
+			}
+		} catch (ZipException e) {
+			// do nothing
+		} catch (IOException e) {
+			// do nothing
+		} finally {
+			if (zipFile != null) {
+				try {
+					zipFile.close();
+				} catch (IOException e) {
+					// do nothing
+				}
+			}
+		}
+	}
+
+	public static void makeResource(File file, ResourceProviderConfig config,
+			List<Resource> resources) {
+		String lowerName = file.getName().toLowerCase();
+		
+		if (lowerName.endsWith(".ezip")) {
+			makeEzipResource(file, config, resources);
+		} else if (lowerName.endsWith(".iso")) {
+			makeIsoResource(file, config, resources);
+		} else if (lowerName.endsWith(".zip")) {
+			makeZipResource(file, config, resources);
+		}
+	}
+
 }

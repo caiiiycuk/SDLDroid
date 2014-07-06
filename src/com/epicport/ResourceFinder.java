@@ -2,7 +2,6 @@ package com.epicport;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -11,13 +10,12 @@ import java.util.Set;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.epicport.resourceprovider.R;
 
-public class ResourceFinder extends AsyncTask<Void, Integer, List<Resource>> {
+public class ResourceFinder extends AsyncTask<Void, String, List<Resource>> {
 
 	private ProgressDialog progressDialog;
 	private Activity activity;
@@ -63,21 +61,32 @@ public class ResourceFinder extends AsyncTask<Void, Integer, List<Resource>> {
 		List<File> isoFiles = new ArrayList<File>();
 
 		for (String path : paths) {
+			publishProgress(activity.getString(R.string.scanning_fs) + 
+					"(" + path + ")");
 			lookupPath(new File(path), zipFiles, isoFiles, 1);
 		}
 
-		List<Resource> resources = new ArrayList<Resource>(zipFiles.size());
+		Set<File> proposed = new HashSet<File>(config.getResources());
+		List<Resource> resources = new ArrayList<Resource>(zipFiles.size() + proposed.size());
+		
+		for (File file: proposed) {
+			publishProgress(activity.getString(R.string.scanning_file) + 
+					"(" + file + ")");
+			ResourceFactory.makeResource(file, config, resources);
+		}
 
 		for (File zip: zipFiles) {
 			if (isCancelled()) {
 				break;
 			}
-
-			Resource resource = ResourceFactory.makeEzipResource(zip, config);
-
-			if (resource != null) {
-				resources.add(resource);
+			
+			if (proposed.contains(zip)) {
+				continue;
 			}
+
+			publishProgress(activity.getString(R.string.scanning_file) + 
+					"(" + zip + ")");
+			ResourceFactory.makeEzipResource(zip, config, resources);
 		}
 		
 		for (File iso: isoFiles) {
@@ -85,9 +94,16 @@ public class ResourceFinder extends AsyncTask<Void, Integer, List<Resource>> {
 				break;
 			}
 			
-			resources.addAll(ResourceFactory.makeIsoResource(iso, config));
+			if (proposed.contains(iso)) {
+				continue;
+			}
+			
+			publishProgress(activity.getString(R.string.scanning_file) + 
+					"(" + iso + ")");
+			ResourceFactory.makeIsoResource(iso, config, resources);
 		}
 
+		publishProgress(activity.getString(R.string.scanning_extracted));
 		List<Resource> inAppResources = searchInAppFolder();
 		inAppResources.addAll(resources);
 		Collections.sort(resources, new Comparator<Resource>() {
@@ -185,6 +201,15 @@ public class ResourceFinder extends AsyncTask<Void, Integer, List<Resource>> {
 
 	private static boolean isHighPriorityPath(String fileName) {
 		return fileName.contains("download") || fileName.contains("downloads");
+	}
+	
+	@Override
+	protected void onProgressUpdate(String... values) {
+		if (values.length > 0) {
+			if (values[0] != null) {
+				progressDialog.setMessage(values[0]);
+			}
+		}
 	}
 
 }

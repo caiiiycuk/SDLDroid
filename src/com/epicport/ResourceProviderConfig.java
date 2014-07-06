@@ -2,9 +2,8 @@ package com.epicport;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
-
-import net.didion.loopy.FileEntry;
 
 public interface ResourceProviderConfig {
 	
@@ -33,5 +32,7 @@ public interface ResourceProviderConfig {
 	void archiveUnpack(File resourceFile, FileWithIdentity fileWithIdentity) throws IOException;
 
 	void archiveClose() throws IOException;
+
+	Collection<File> getResources();
 
 }

@@ -12,5 +12,8 @@
     <string name="select_resource">Select a file&#8230;</string>
     <string name="wrong_resource">Sorry, you chose the wrong file</string>
     <string name="checking_resource">Please wait, opening resource file</string>
+    <string name="scanning_fs">Scanning file system,&#160;</string>
+    <string name="scanning_file">Scanning file,&#160;</string>
+    <string name="scanning_extracted">Scanning already extracted&#8230;</string>
     
 </resources>
