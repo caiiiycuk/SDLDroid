@@ -7,8 +7,8 @@
     <string name="resource_finder_title">Поиск ресурсов</string>
     <string name="resource_finder_message">Пожалуйста подождите&#8230;</string>
     <string name="resource_choose_title">Выберите ресурс</string>
-    <string name="unzip_title">Извелечение ресурсов</string>
-    <string name="unzip_message">Подождите пожалуйтса&#8230;</string>
+    <string name="unzip_title">Извлечение ресурсов</string>
+    <string name="unzip_message">Подождите пожалуйста&#8230;</string>
     <string name="select_resource">Выбрать файл&#8230;</string>
     <string name="wrong_resource">Извините, вы выбрали неподходящий файл</string>
     <string name="checking_resource">Пожалуйста подождите, чтение файла</string>
