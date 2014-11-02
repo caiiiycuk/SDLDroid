@@ -3,9 +3,9 @@ Android build
 
 Directory layout:
 ```sh
-  ./android-ndk-r8e - NDK
-  ./dune2           - OpenDUNE 
-  ./SDLDroid        - This repository
+./android-ndk-r8e - NDK
+./dune2           - OpenDUNE 
+./SDLDroid        - This repository
 ```
 
 Making symlinks:
