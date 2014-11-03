@@ -21,6 +21,7 @@ freely, subject to the following restrictions:
 
 package net.sourceforge.clonekeenplus;
 
+import com.crashlytics.android.Crashlytics;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -81,12 +82,11 @@ public class MainActivity extends Activity implements Eula.OnEulaAgreedTo, Langu
 	
 	public static String DATA_DIR_FLAG = " -d data-en/";
 	
-	private final static String APP_KEY = "<enter key here>";
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		Crashlytics.start(this);
 		
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
