@@ -7,19 +7,16 @@ import com.gamesinjs.dune2.game.GameMode;
 
 public class BillingButton extends ControlButton {
 
-	private final DonateClickListener donateClickListener;
 	private final ReinforcementClickListener reinforcementClickListener;
 
-	BillingButton(final Activity activity, final BillingThread billingThread) {
+	BillingButton(final Activity activity) {
 		super(activity);
 
-		this.donateClickListener = new DonateClickListener(activity,
-				billingThread);
 		this.reinforcementClickListener = new ReinforcementClickListener(
-				activity, billingThread);
+				activity);
 
-		setImageResource(R.drawable.billing);
-		setOnClickListener(donateClickListener);
+		setOnClickListener(reinforcementClickListener);
+		setVisibility(View.GONE);
 	}
 
 	@Override
@@ -27,29 +24,24 @@ public class BillingButton extends ControlButton {
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				if (gameMode == GameMode.GM_MENU) {
-					setImageResource(R.drawable.billing);
-					setOnClickListener(donateClickListener);
-					setVisibility(View.VISIBLE);
-				} else if (gameMode == GameMode.GM_MAP) {
+				if (gameMode == GameMode.GM_MAP) {
 					switch (GameMode.playerHouse()) {
 					case GameMode.HOUSE_ATREIDES:
-						setImageResource(R.drawable.sonic_tank);
+						setImageResource(R.drawable.a_sonic_tank);
 						break;
 
 					case GameMode.HOUSE_ORDOS:
-						setImageResource(R.drawable.deviator);
+						setImageResource(R.drawable.o_deviator);
 						break;
 
 					case GameMode.HOUSE_HARKONNEN:
-						setImageResource(R.drawable.devastator);
+						setImageResource(R.drawable.h_devastator);
 						break;
 
 					default:
-						setImageResource(R.drawable.siege_tank);
+						setImageResource(R.drawable.h_siege_tank);
 					}
 
-					setOnClickListener(reinforcementClickListener);
 					setVisibility(View.VISIBLE);
 				} else {
 					setVisibility(View.GONE);

@@ -15,9 +15,8 @@ public class ControlBar extends LinearLayout implements GameModeChangeListener {
 
 	private static ControlBar instance = null;
 
-	public static void createFor(FrameLayout layout, Activity activity,
-			BillingThread billingThread) {
-		instance = new ControlBar(activity, billingThread);
+	public static void createFor(FrameLayout layout, Activity activity) {
+		instance = new ControlBar(activity);
 		layout.addView(instance);
 	}
 
@@ -26,10 +25,10 @@ public class ControlBar extends LinearLayout implements GameModeChangeListener {
 	private final LangButton langButton;
 	private final OptionsButton optionsButton;
 	
-	private ControlBar(Activity activity, BillingThread billingThread) {
+	private ControlBar(Activity activity) {
 		super(activity);
 		this.activity = activity;
-		this.billingButton = new BillingButton(activity, billingThread);
+		this.billingButton = new BillingButton(activity);
 		this.langButton = new LangButton(activity);
 		this.optionsButton = new OptionsButton(activity);
 		

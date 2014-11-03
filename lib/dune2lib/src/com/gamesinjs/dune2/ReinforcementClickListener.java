@@ -2,6 +2,8 @@ package com.gamesinjs.dune2;
 
 import java.util.Arrays;
 
+import mp.MpUtils;
+import mp.PaymentRequest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -25,35 +27,32 @@ public class ReinforcementClickListener implements OnClickListener {
 
 	private final Activity activity;
 	private final Handler handler;
-	private final BillingThread billingThread;
 
 	private static final SparseArray<UnitSku[]> unitMap;
 
 	static {
 		unitMap = new SparseArray<UnitSku[]>();
 		unitMap.put(GameMode.HOUSE_ATREIDES, new UnitSku[] {
-				new UnitSku(R.string.rocket_launcher, UNIT_LAUNCHER, 4, "rocket_launcher"),
-				new UnitSku(R.string.siege_tank, UNIT_SIEGE_TANK, 5, "sieges"),
-				new UnitSku(R.string.sonic_tank, UNIT_SONIC_TANK, 3, "sonics") });
+				new UnitSku(R.string.rocket_launcher, UNIT_LAUNCHER, 6, R.drawable.a_rocket_launcher,  "rocket_launcher"),
+				new UnitSku(R.string.siege_tank, UNIT_SIEGE_TANK, 8, R.drawable.a_siege_tank, "sieges"),
+				new UnitSku(R.string.sonic_tank, UNIT_SONIC_TANK, 4, R.drawable.a_sonic_tank, "sonics") });
 		unitMap.put(GameMode.HOUSE_ORDOS, new UnitSku[] {
-				new UnitSku(R.string.rocket_launcher, UNIT_LAUNCHER, 4, "rocket_launcher"),
-				new UnitSku(R.string.siege_tank, UNIT_SIEGE_TANK, 5, "sieges"),
-				new UnitSku(R.string.deviator, UNIT_DEVIATOR, 4, "deviators") });
+				new UnitSku(R.string.rocket_launcher, UNIT_LAUNCHER, 6, R.drawable.o_rocket_launcher, "rocket_launcher"),
+				new UnitSku(R.string.siege_tank, UNIT_SIEGE_TANK, 8, R.drawable.o_siege_tank, "sieges"),
+				new UnitSku(R.string.deviator, UNIT_DEVIATOR, 5, R.drawable.o_deviator, "deviators") });
 		unitMap.put(GameMode.HOUSE_HARKONNEN, new UnitSku[] {
-				new UnitSku(R.string.rocket_launcher, UNIT_LAUNCHER, 4, "rocket_launcher"),
-				new UnitSku(R.string.siege_tank, UNIT_SIEGE_TANK, 5, "sieges"),
-				new UnitSku(R.string.devastator, UNIT_DEVASTATOR, 3, "devastators") });
+				new UnitSku(R.string.rocket_launcher, UNIT_LAUNCHER, 6, R.drawable.h_rocket_launcher, "rocket_launcher"),
+				new UnitSku(R.string.siege_tank, UNIT_SIEGE_TANK, 8, R.drawable.h_siege_tank, "sieges"),
+				new UnitSku(R.string.devastator, UNIT_DEVASTATOR, 4, R.drawable.h_devastator, "devastators") });
 	}
 	
 	private static UnitSku[] getUnits() {
 		return unitMap.get(GameMode.playerHouse());
 	}
 
-	public ReinforcementClickListener(Activity activity,
-			BillingThread billingThread) {
+	public ReinforcementClickListener(Activity activity) {
 		this.activity = activity;
 		this.handler = new Handler(activity.getMainLooper());
-		this.billingThread = billingThread;
 	}
 
 	@Override
@@ -85,7 +84,17 @@ public class ReinforcementClickListener implements OnClickListener {
 					Log.d("OpenDUNE", "Too_many_units -> disposing allocated");
 					GameMode.freeUnits(units);
 				} else {
-					billingThread.purchase(unitSku.sku, new PurchaseListener() {
+					 PaymentRequest.PaymentRequestBuilder builder = new PaymentRequest.PaymentRequestBuilder();
+		             builder.setService(PaymentRegistry.SERVICE_ID, PaymentRegistry.APP_SECRET);
+		             builder.setDisplayString(activity.getResources().getString(unitSku.name));     
+		             builder.setType(MpUtils.PRODUCT_TYPE_CONSUMABLE);
+		             builder.setIcon(unitSku.drawable);
+
+		             PaymentRequest pr = builder.build();
+		             int requestCode = PaymentRegistry.getRequestCode();
+		             
+		             activity.startActivityForResult(pr.toIntent(activity), requestCode);
+		             PaymentRegistry.purchase(requestCode, new PurchaseListener() {
 
 						@Override
 						public void success() {
