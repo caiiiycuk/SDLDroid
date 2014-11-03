@@ -39,6 +39,8 @@
             android:name="mp.MpActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        
+        <meta-data android:name="com.crashlytics.ApiKey" android:value="02a5ee47405b930a223ac078b1ab256ec7730773"/>
         <!-- !Fortumo SDK -->
 
         <!-- ==ADMOB== --> <activity android:name="com.google.ads.AdActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
