@@ -69,7 +69,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gamesinjs.dune2.ControlBar;
-import com.gamesinjs.dune2.BillingThread;
 import com.gamesinjs.dune2.game.GameMode;
 import com.gamesinjs.dune2.eula.Eula;
 import com.gamesinjs.dune2.i18n.I18NUtils;
@@ -83,7 +82,6 @@ public class MainActivity extends Activity implements Eula.OnEulaAgreedTo, Langu
 	public static String DATA_DIR_FLAG = " -d data-en/";
 	
 	private final static String APP_KEY = "<enter key here>";
-	private BillingThread billingThread;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -221,13 +219,11 @@ public class MainActivity extends Activity implements Eula.OnEulaAgreedTo, Langu
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (billingThread != null) {
-			if (!billingThread.onActivityResult(requestCode, resultCode, data)) {
-				super.onActivityResult(requestCode, resultCode, data);
-			}
-		} else {
-			super.onActivityResult(requestCode, resultCode, data);
+		if (PaymentRegistry.onActivityResult(requestCode, resultCode, data)) {
+			return;
 		}
+
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 	
 	@Override
@@ -351,9 +347,8 @@ public class MainActivity extends Activity implements Eula.OnEulaAgreedTo, Langu
 		// Receive keyboard events
 		DimSystemStatusBar.get().dim(_videoLayout);
 		DimSystemStatusBar.get().dim(mGLView);
-		
-		billingThread = new BillingThread(this, APP_KEY);
-		ControlBar.createFor(_videoLayout, this, billingThread);
+
+		ControlBar.createFor(_videoLayout, this);
 	}
 
 	@Override
@@ -425,10 +420,6 @@ public class MainActivity extends Activity implements Eula.OnEulaAgreedTo, Langu
 	@Override
 	protected void onDestroy()
 	{
-		if (billingThread != null) {
-			billingThread.dispose();
-		}
-
 		GameMode.dispose();
 
 		if( downloader != null )

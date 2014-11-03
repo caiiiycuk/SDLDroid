@@ -48,7 +48,7 @@ public class Eula {
 			
 			return;
 		}
-		
+
 		if (activity instanceof OnEulaAgreedTo) {
 			((OnEulaAgreedTo) activity).onEulaAgreedTo();
 		}

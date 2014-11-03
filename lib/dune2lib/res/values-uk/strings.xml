@@ -12,11 +12,11 @@
     <string name="donate_15">Пожертвовать 500 руб.</string>
     <string name="donate_25">Пожертвовать 750 руб.</string>
     <string name="donate_cancel">Отмена</string>
-    <string name="rocket_launcher">4 Ракeтных танка</string>
-    <string name="siege_tank">5 Осадных танка</string>
-    <string name="sonic_tank">3 Звуковых танка</string>
-    <string name="deviator">4 Девиатора</string>
-    <string name="devastator">3 Девастатора</string>
+    <string name="rocket_launcher">Купить 6 ракeтных танка</string>
+    <string name="siege_tank">Купить 5 осадных танка</string>
+    <string name="sonic_tank">Купить 4 звуковых танка</string>
+    <string name="deviator">Купить 5 девиаторов</string>
+    <string name="devastator">Купить 4 девастатора</string>
     <string name="too_many_units">Слишком много юнитов</string>
     <string name="billing_busy">Сервис платежей занят</string>
     <string name="connecting">Подключаемся&#8230;</string>

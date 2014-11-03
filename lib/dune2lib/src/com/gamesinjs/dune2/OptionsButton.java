@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.gamesinjs.dune2.game.GameMode;
-import com.gamesinjs.dune2.language.LanguageSelector;
 
 public class OptionsButton extends ControlButton implements OnClickListener {
 
