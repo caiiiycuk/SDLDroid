@@ -30,5 +30,7 @@
     <string name="enable_offset">Включить смещение при постройке</string>
     <string name="disable_offset">Отключить смещение при постройке</string>
     <string name="cancel">Отмена</string>
+    <string name="update_found">Доступна новая версия</string>
+    <string name="update_install">Установить</string>
 
 </resources>
