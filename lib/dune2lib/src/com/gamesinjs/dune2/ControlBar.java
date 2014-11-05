@@ -24,6 +24,7 @@ public class ControlBar extends LinearLayout implements GameModeChangeListener {
 	private final BillingButton billingButton;
 	private final LangButton langButton;
 	private final OptionsButton optionsButton;
+	private final UpdateButton updateButton;
 	
 	private ControlBar(Activity activity) {
 		super(activity);
@@ -31,16 +32,17 @@ public class ControlBar extends LinearLayout implements GameModeChangeListener {
 		this.billingButton = new BillingButton(activity);
 		this.langButton = new LangButton(activity);
 		this.optionsButton = new OptionsButton(activity);
+		this.updateButton = new UpdateButton(activity);
 		
 		LayoutParams layoutParams = new LinearLayout.LayoutParams(
 				ViewGroup.LayoutParams.WRAP_CONTENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.LEFT | Gravity.TOP);
 
 		setLayoutParams(layoutParams);
+		addView(updateButton);
 		addView(billingButton);
 		addView(langButton);
 		addView(optionsButton);
-		
 
 		GameMode.setGameModeChangeListener(this);
 	}
@@ -61,6 +63,10 @@ public class ControlBar extends LinearLayout implements GameModeChangeListener {
 		if (instance.optionsButton.dispatch(ev)) {
 			return true;
 		}
+		
+		if (instance.updateButton.dispatch(ev)) {
+			return true;
+		}
 
 		return false;
 	}
@@ -70,6 +76,7 @@ public class ControlBar extends LinearLayout implements GameModeChangeListener {
 		billingButton.onGameModeChanged(gameMode);
 		langButton.onGameModeChanged(gameMode);
 		optionsButton.onGameModeChanged(gameMode);
+		updateButton.onGameModeChanged(gameMode);
 		
 		activity.runOnUiThread(new Runnable() {
 		 @Override

@@ -74,6 +74,7 @@ import com.gamesinjs.dune2.game.GameMode;
 import com.gamesinjs.dune2.eula.Eula;
 import com.gamesinjs.dune2.i18n.I18NUtils;
 import com.gamesinjs.dune2.language.LanguageSelector;
+import com.gamesinjs.dune2.update.UpdateTask;
 
 public class MainActivity extends Activity implements Eula.OnEulaAgreedTo, LanguageSelector.OnLanguageSelected
 {
@@ -87,6 +88,7 @@ public class MainActivity extends Activity implements Eula.OnEulaAgreedTo, Langu
 	{
 		super.onCreate(savedInstanceState);
 		Crashlytics.start(this);
+		UpdateTask.runOn(this);
 		
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 

@@ -30,5 +30,7 @@
     <string name="enable_offset">Enable structure placement offset</string>
     <string name="disable_offset">Disable structure placement offset</string>
     <string name="cancel">Cancel</string>
+    <string name="update_found">New version available</string>
+    <string name="update_install">Install</string>
 
 </resources>
