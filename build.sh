@@ -87,7 +87,7 @@ cd project && env PATH=$NDKBUILDPATH BUILD_NUM_CPUS=$NCPU nice -n19 ndk-build -j
 	{	if $build_release ; then \
 			ant release || exit 1 ; \
                         jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ~/android/keys/dune_2.keystore bin/MainActivity-release-unsigned.apk dune_2 || exit 1; \
-                        ~/android/sdks/tools/zipalign -v 4 bin/MainActivity-release-unsigned.apk bin/Dune_2.apk ; \
+                        /home/caiiiycuk/android/sdk/build-tools/android-4.4W/zipalign -v 4 bin/MainActivity-release-unsigned.apk bin/Dune_2.apk ; \
 		else \
 			ant debug ; \
 		fi ; } && \
